@@ -3,42 +3,51 @@ using AssetsService as service from '../../srv/asset-structure';
 @odata.draft.enabled
 
 annotate AssetsService.Buildings with @(UI : {
-    SelectionFields : [
+    SelectionFields     : [
         createdAt,
         createdBy
     ],
-    LineItem        : [
-        {
-            Value : ID,
-            Label : 'BuildingId'
-        },
-        {
-            Value : description,
-            Label : 'Description'
-        },
-        {
-            Value : street,
-            Label : 'Street'
-        }
+    LineItem            : [
+        {Value : ID, },
+        {Value : description, },
+        {Value : street, },
+        {Value : description},
+        {Value : egid},
+        {Value : number},
+        {Value : numberExtension},
+        {Value : street},
+        {Value : postalCode},
+        {Value : city},
+        {Value : region},
+        {Value : country.code},
     ],
-    HeaderInfo      : {
-        TypeName       : 'Building',
-        TypeNamePlural : 'Buildings',
+    HeaderInfo         : {
+        TypeName       : '{i18n>Building}',
+        TypeNamePlural : '{i18n>Buildings}',
         Title          : {
-            Label : 'BuildingId',
-            Value : ID
+            Value : ID, Label : '{i18n>Building}',
         },
-        Description    : {Value : createdBy}
+        Description    : { Value : createdAt}
     },
-    Identification  : [ //Is the main field group
-        {
-            Value : createdBy,
-            Label : 'Creator'
-        },
-        {
-            Value : createdAt,
-            Label : 'Date'
-        },
+    Identification      : [ //Is the main field group
+        {Value : createdBy, },
+        {Value : createdAt, },
         {Value : ID},
     ],
+    Facets              : [{
+        $Type  : 'UI.ReferenceFacet',
+        Label  : '{i18n>General}',
+        Target : '@UI.FieldGroup#General'
+    }, ],
+    FieldGroup #General : {Data : [
+        {Value : description},
+        {Value : egid},
+        {Value : number},
+        {Value : numberExtension},
+        {Value : street},
+        {Value : postalCode},
+        {Value : city},
+        {Value : region},
+        {Value : country.code},
+    ]}
 }, );

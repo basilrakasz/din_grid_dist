@@ -9,18 +9,18 @@ using {
 } from '@sap/cds/common';
 
 aspect address {
-    street          : String;
-    number          : String;
-    numberExtension : String;
-    postalCode      : String;
-    city            : String;
-    region          : String;
+    street          : String @(title : '{i18n>Street}');
+    number          : String @(title : '{i18n>HouseNumber}');
+    numberExtension : String @(title : '{i18n>HouserNumberExtension}');
+    postalCode      : String @(title : '{i18n>PostalCode}');
+    city            : String @(title : '{i18n>City}');
+    region          : String @(title : '{i18n>Region}');
     country         : Country;
 }
 
 entity Buildings : cuid, managed, address {
-    description   : String;
-    egid          : String;
+    description   : String @(title : '{i18n>Description}');
+    egid          : String @(title : '{i18n>EGID}');
 
     premises      : Association to many Premises
                         on premises.building = $self;
@@ -30,11 +30,11 @@ entity Buildings : cuid, managed, address {
 
 entity Premises : cuid, managed {
     description       : String;
-    floor             : String;
-    room              : String;
-    roomExtension     : String;
-    locationExtension : String;
-    ewid              : String;
+    floor             : String @(title : '{i18n>Floor}');
+    roomNumber        : String @(title : '{i18n>RoomNumber}');
+    roomExtension     : String @(title : '{i18n>RoomNumberExtension}');
+    locationExtension : String @(title : '{i18n>LocationExtension}');
+    ewid              : String @(title : '{i18n>EWID}');
     building          : Association to Buildings;
 
     installations     : Association to many Installations
@@ -42,9 +42,9 @@ entity Premises : cuid, managed {
 }
 
 entity Installations : cuid, managed, temporal {
-    type        : String;
-    description : String;
-    division    : String;
+    type        : String @(title : '{i18n>InstallationType}');
+    description : String @(title : '{i18n>description}');
+    division    : String @(title : '{i18n>Divison}');
     building    : Association to Buildings;
     premise     : Association to Premises;
 }
