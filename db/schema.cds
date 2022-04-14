@@ -22,20 +22,22 @@ entity Buildings : cuid, managed, address {
     description   : String @(title : '{i18n>Description}');
     egid          : String @(title : '{i18n>EGID}');
 
-    premises      : Association to many Premises
-                        on premises.building = $self;
+    // premises      : Association to many Premises
+    //                     on premises.building = $self;
+    premise : Association to Premises;
+
     installations : Association to many Installations
                         on installations.building = $self;
 }
 
 entity Premises : cuid, managed {
-    description       : String;
+    description       : String @(title : '{i18n>Description}');
     floor             : String @(title : '{i18n>Floor}');
     roomNumber        : String @(title : '{i18n>RoomNumber}');
     roomExtension     : String @(title : '{i18n>RoomNumberExtension}');
     locationExtension : String @(title : '{i18n>LocationExtension}');
     ewid              : String @(title : '{i18n>EWID}');
-    building          : Association to Buildings;
+    building          : Association to Buildings@(title : '{i18n>Building}');
 
     installations     : Association to many Installations
                             on installations.premise = $self;

@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "cds run",
-    "watch-buildings": "cds watch --open buildings/webapp/index.html?sap-ui-xx-viewCache=false#Building-manage"
+    "watch-buildings": "cds watch --open buildings/webapp/index.html?sap-ui-xx-viewCache=false#Building-manage",
+    "watch-premises": "cds watch --open premises/webapp/index.html?sap-ui-xx-viewCache=false#fe-lrop-v4"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -43,6 +44,7 @@
     }
   },
   "sapux": [
-    "app/buildings"
+    "app/buildings",
+    "app/premises"
   ]
 }

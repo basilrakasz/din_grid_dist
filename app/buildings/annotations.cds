@@ -36,11 +36,18 @@ annotate AssetsService.Buildings with @(UI : {
         {Value : createdAt, },
         {Value : ID},
     ],
-    Facets              : [{
-        $Type  : 'UI.ReferenceFacet',
-        Label  : '{i18n>General}',
-        Target : '@UI.FieldGroup#General'
-    }, ],
+    Facets              : [
+        {
+            $Type  : 'UI.ReferenceFacet',
+            Label  : '{i18n>General}',
+            Target : '@UI.FieldGroup#General'
+        },
+        {
+            $Type  : 'UI.ReferenceFacet',
+            Label  : '{i18n>Premises}',
+            Target : '/@UI.LineItem'
+        },
+    ],
     FieldGroup #General : {Data : [
         {Value : description},
         {Value : egid},
@@ -50,49 +57,6 @@ annotate AssetsService.Buildings with @(UI : {
         {Value : postalCode},
         {Value : city},
         {Value : region},
-        {Value : country.code},
+        {Value : country_code},
     ]}
 }, );
-
-annotate AssetsService.Premises with @(UI : {
-    SelectionFields     : [
-        description,
-        ewid,
-        createdAt,
-        createdBy
-    ],
-    LineItem            : [
-        {Value : ID, },
-        {Value : description, },
-        {Value : floor, },
-        {Value : roomNumber},
-        {Value : roomExtension},
-    ],
-    HeaderInfo          : {
-        TypeName       : '{i18n>Premise}',
-        TypeNamePlural : '{i18n>Premises}',
-        Title          : {
-            Value : ID,
-            Label : '{i18n>Premise}',
-        },
-        Description    : {Value : createdAt}
-    },
-    Identification      : [ //Is the main field group
-        {Value : createdBy, },
-        {Value : createdAt, },
-        {Value : ID},
-    ],
-    Facets              : [{
-        $Type  : 'UI.ReferenceFacet',
-        Label  : '{i18n>General}',
-        Target : '@UI.FieldGroup#General'
-    }, ],
-    FieldGroup #General : {Data : [
-        {Value : ID, },
-        {Value : description, },
-        {Value : floor, },
-        {Value : roomNumber},
-        {Value : roomExtension},
-    ]}
-},
-);

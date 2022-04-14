@@ -6,8 +6,8 @@
                     "catalogs": [],
                     "groups": [
                         {
-                            "id": "Asset",
-                            "title": "Assets",
+                            "id": "Building",
+                            "title": "Buildings",
                             "isPreset": true,
                             "isVisible": true,
                             "isGroupLocked": false,
@@ -52,8 +52,8 @@
                             },
                             "resolutionResult": {
                                 "applicationType": "SAPUI5",
-                                "additionalInformation": "SAPUI5.Component=ns.assets",
-                                "url": "/assets/webapp"
+                                "additionalInformation": "SAPUI5.Component=ns.buildings",
+                                "url": "/buildings/webapp"
                             }
                         }
                     }
