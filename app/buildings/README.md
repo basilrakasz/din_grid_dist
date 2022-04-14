@@ -8,8 +8,8 @@
 |**Floorplan Used**<br>List Report Object Page V4|
 |**Service Type**<br>Local Cap|
 |**Service URL**<br>/service/assets/
-|**Module Name**<br>assets|
-|**Application Title**<br>Assets|
+|**Module Name**<br>buildings|
+|**Application Title**<br>buildings|
 |**Namespace**<br>ns|
 |**UI5 Theme**<br>sap_fiori_3|
 |**UI5 Version**<br>1.100.0|
@@ -18,7 +18,7 @@
 |**Main Entity**<br>Buildings|
 |**Navigation Entity**<br>None|
 
-## assets
+## buildings
 
 A Fiori application.
 
@@ -26,7 +26,7 @@ A Fiori application.
 
 -   This app has been generated using the SAP Fiori tools - App Generator, as part of the SAP Fiori tools suite.  In order to launch the generated app, simply start your CAP project and navigate to the following location in your browser:
 
-http://localhost:4004/assets/webapp/index.html
+http://localhost:4004/buildings/webapp/index.html
 
 #### Pre-requisites:
 

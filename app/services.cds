@@ -1,1 +1,1 @@
-using from './assets/annotations';
+using from './buildings/annotations';
