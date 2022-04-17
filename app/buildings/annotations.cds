@@ -1,3 +1,4 @@
+using from '../premises/annotations';
 using AssetsService as service from '../../srv/asset-structure';
 
 @odata.draft.enabled
@@ -45,7 +46,7 @@ annotate AssetsService.Buildings with @(UI : {
         {
             $Type  : 'UI.ReferenceFacet',
             Label  : '{i18n>Premises}',
-            Target : '/@UI.LineItem'
+            Target : 'premises/@UI.LineItem',
         },
     ],
     FieldGroup #General : {Data : [
@@ -59,4 +60,41 @@ annotate AssetsService.Buildings with @(UI : {
         {Value : region},
         {Value : country_code},
     ]}
+}, );
+
+annotate AssetsService.Premises with @(UI : {
+    SelectionFields     : [
+        description,
+        ewid,
+        createdAt,
+        createdBy
+    ],
+    LineItem            : [
+        {
+            $Type          : 'UI.DataFieldWithIntentBasedNavigation',
+            Value          : ID,
+            SemanticObject : 'Premise',
+            Action         : 'manage'
+        },
+        {Value : description, },
+        {Value : floor, },
+        {Value : roomNumber},
+        {Value : roomExtension},
+        {Value : ewid},
+        {Value : building_ID, },
+    ],
+    HeaderInfo          : {
+        TypeName       : '{i18n>Premise}',
+        TypeNamePlural : '{i18n>Premises}',
+        Title          : {
+            Value : ID,
+            Label : '{i18n>Premise}',
+        },
+        Description    : {Value : createdAt}
+    },
+    Identification      : [ //Is the main field group
+        {Value : createdBy, },
+        {Value : createdAt, },
+        {Value : ID},
+    ],
 }, );

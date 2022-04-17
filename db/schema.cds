@@ -24,7 +24,7 @@ entity Buildings : cuid, managed, address {
 
     // premises      : Association to many Premises
     //                     on premises.building = $self;
-    premise : Association to Premises;
+    premises : Association to many Premises on premises.building = $self;
 
     installations : Association to many Installations
                         on installations.building = $self;
