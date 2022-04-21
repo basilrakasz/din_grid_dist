@@ -1,1 +1,25 @@
-{}
+{
+    "[development]": {
+        "auth": {
+            "passport": {
+                "strategy": "mock",
+                "users": {
+                    "asset.viewer@inpeek.ch": {
+                        "password": "initial",
+                        "ID": "asset.viewer@inpeek.ch",
+                        "roles": [
+                            "AssetViewer"
+                        ]
+                    },
+                    "asset.manager@inpeek.ch": {
+                        "password": "initial",
+                        "ID": "asset.manager@inpeek.ch",
+                        "roles": [
+                            "AssetManager"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
