@@ -22,8 +22,6 @@ entity Buildings : cuid, managed, address {
     description   : String @(title : '{i18n>Description}');
     egid          : String @(title : '{i18n>EGID}');
 
-    // premises      : Association to many Premises
-    //                     on premises.building = $self;
     premises : Association to many Premises on premises.building = $self;
 
     installations : Association to many Installations

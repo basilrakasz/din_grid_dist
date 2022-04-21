@@ -48,6 +48,11 @@ annotate AssetsService.Buildings with @(UI : {
             Label  : '{i18n>Premises}',
             Target : 'premises/@UI.LineItem',
         },
+        {
+            $Type  : 'UI.ReferenceFacet',
+            Label  : '{i18n>Admin}',
+            Target : '@UI.FieldGroup#Admin'
+        },
     ],
     FieldGroup #General : {Data : [
         {Value : description},
@@ -59,17 +64,24 @@ annotate AssetsService.Buildings with @(UI : {
         {Value : city},
         {Value : region},
         {Value : country_code},
+    ]},
+    FieldGroup #Admin   : {Data : [
+        {Value : createdBy},
+        {Value : createdAt},
+        {Value : modifiedBy},
+        {Value : modifiedAt}
     ]}
 }, );
 
+@odata.draft.enabled
 annotate AssetsService.Premises with @(UI : {
-    SelectionFields     : [
+    SelectionFields : [
         description,
         ewid,
         createdAt,
         createdBy
     ],
-    LineItem            : [
+    LineItem        : [
         {
             $Type          : 'UI.DataFieldWithIntentBasedNavigation',
             Value          : ID,
@@ -82,8 +94,9 @@ annotate AssetsService.Premises with @(UI : {
         {Value : roomExtension},
         {Value : ewid},
         {Value : building_ID, },
+        {Value : IsActiveEntity, },
     ],
-    HeaderInfo          : {
+    HeaderInfo      : {
         TypeName       : '{i18n>Premise}',
         TypeNamePlural : '{i18n>Premises}',
         Title          : {
@@ -92,7 +105,7 @@ annotate AssetsService.Premises with @(UI : {
         },
         Description    : {Value : createdAt}
     },
-    Identification      : [ //Is the main field group
+    Identification  : [ //Is the main field group
         {Value : createdBy, },
         {Value : createdAt, },
         {Value : ID},
