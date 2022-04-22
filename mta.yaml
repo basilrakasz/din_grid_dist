@@ -10,6 +10,7 @@ build-parameters:
     - builder: custom
       commands:
         - npx -p @sap/cds-dk cds build --production
+        - npx rimraf gen/db/src/gen/data #to remove all CSV Testdata otherwise, production tables would get overwritten!!
 
 modules:
   - name: din_grid_dist-srv
@@ -23,17 +24,16 @@ modules:
       - name: srv-api # required by consumers of CAP services (e.g. approuter)
         properties:
           srv-url: ${default-url}
+      - name: mtx-api # potentially required by approuter
+        properties:
+          mtx-url: ${default-url}
     requires:
-      - name: din_grid_dist-db
       - name: din_grid_dist-auth
-
-  - name: din_grid_dist-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
       - name: din_grid_dist-db
+      - name: din_grid_dist-registry
+    properties:
+      SUBSCRIPTION_URL: ${protocol}://\${tenant_subdomain}-${default-uri}
+      SUBSCRIPTION_URL_REPLACEMENT_RULES: [ [ '-srv', '' ] ]
 
   - name: din_grid_dist
     type: approuter.nodejs
@@ -50,13 +50,15 @@ modules:
           url: ~{srv-url}
           forwardAuthToken: true
       - name: din_grid_dist-auth
+      - name: mtx-api
+        group: destinations
+        properties:
+          name: mtx-api # must be used in xs-app.json as well
+          url: ~{mtx-url}
+    properties:
+      TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
 
 resources:
-  - name: din_grid_dist-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana # or 'hanatrial' on trial landscapes
-      service-plan: hdi-shared
 
   - name: din_grid_dist-auth
     type: org.cloudfoundry.managed-service
@@ -66,4 +68,30 @@ resources:
       path: ./xs-security.json
       config:
         xsappname: din_grid_dist-${org}-${space}
-        tenant-mode: dedicated
+        tenant-mode: shared
+
+  - name: din_grid_dist-db
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: service-manager
+      service-plan: container
+
+  - name: din_grid_dist-registry
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: mtx-api
+    parameters:
+      service: saas-registry
+      service-plan: application
+      config:
+        xsappname: din_grid_dist-${org}-${space}
+        appName: din_grid_dist-${org}-${space}
+        displayName: din_grid_dist
+        description: A simple CAP project.
+        category: 'Category'
+        appUrls:
+          getDependencies: ~{mtx-api/mtx-url}/mtx/v1/provisioning/dependencies
+          onSubscription: ~{mtx-api/mtx-url}/mtx/v1/provisioning/tenant/{tenantId}
+          onSubscriptionAsync: false
+          onUnSubscriptionAsync: false
+          callbackTimeoutMillis: 300000

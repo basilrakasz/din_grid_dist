@@ -7,6 +7,29 @@
     {
       "name": "$XSAPPNAME.AssetManager",
       "description": "AssetManager"
+    },
+    {
+      "name": "$XSAPPNAME.MtxDiagnose",
+      "description": "Diagnose MTX"
+    },
+    {
+      "name": "$XSAPPNAME.mtcallback",
+      "description": "Subscribe to applications",
+      "grant-as-authority-to-apps": [
+        "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
+      ]
+    },
+    {
+      "name": "$XSAPPNAME.mtdeployment",
+      "description": "Deploy applications"
+    },
+    {
+      "name": "$XSAPPNAME.ExtendCDS",
+      "description": "Extend CDS applications"
+    },
+    {
+      "name": "$XSAPPNAME.ExtendCDSdelete",
+      "description": "Extend CDS applications with undeployments"
     }
   ],
   "attributes": [],
@@ -26,6 +49,34 @@
         "$XSAPPNAME.AssetManager"
       ],
       "attribute-references": []
+    },
+    {
+      "name": "MultitenancyAdministrator",
+      "description": "Administrate multitenant applications",
+      "scope-references": [
+        "$XSAPPNAME.MtxDiagnose",
+        "$XSAPPNAME.mtdeployment",
+        "$XSAPPNAME.mtcallback"
+      ]
+    },
+    {
+      "name": "ExtensionDeveloper",
+      "description": "Extend application",
+      "scope-references": [
+        "$XSAPPNAME.ExtendCDS"
+      ]
+    },
+    {
+      "name": "ExtensionDeveloperUndeploy",
+      "description": "Undeploy extension",
+      "scope-references": [
+        "$XSAPPNAME.ExtendCDSdelete"
+      ]
     }
+  ],
+  "authorities": [
+    "$XSAPPNAME.MtxDiagnose",
+    "$XSAPPNAME.mtdeployment",
+    "$XSAPPNAME.mtcallback"
   ]
 }
