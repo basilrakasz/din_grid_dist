@@ -1,0 +1,31 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.AssetViewer",
+      "description": "AssetViewer"
+    },
+    {
+      "name": "$XSAPPNAME.AssetManager",
+      "description": "AssetManager"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "AssetViewer",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.AssetViewer"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "AssetManager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.AssetManager"
+      ],
+      "attribute-references": []
+    }
+  ]
+}
