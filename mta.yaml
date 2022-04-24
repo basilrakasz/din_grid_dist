@@ -12,6 +12,7 @@ build-parameters:
         - npx -p @sap/cds-dk cds build --production
         - npx rimraf gen/db/src/gen/data #to remove all CSV Testdata otherwise, production tables would get overwritten!!
 
+
 modules:
   - name: din_grid_dist-srv
     type: nodejs
@@ -42,6 +43,8 @@ modules:
       keep-existing-routes: true
       disk-quota: 256M
       memory: 256M
+    properties:
+      TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
     requires:
       - name: srv-api
         group: destinations
@@ -49,17 +52,14 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-      - name: din_grid_dist-auth
       - name: mtx-api
         group: destinations
         properties:
           name: mtx-api # must be used in xs-app.json as well
           url: ~{mtx-url}
-    properties:
-      TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
+      - name: din_grid_dist-auth
 
 resources:
-
   - name: din_grid_dist-auth
     type: org.cloudfoundry.managed-service
     parameters:
