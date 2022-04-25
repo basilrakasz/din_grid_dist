@@ -14,7 +14,7 @@ module.exports = cds.service.impl(async function() {
     results.scopes.identified = req.user.is('identified-user');
     results.scopes.authenticated = req.user.is('authenticated-user');
     results.scopes.AgentAdmin = req.user.is('AgentAdmin');
-    results.scopes.AgentViewer = req.user.is('AgentViewer');
+    results.scopes.AgentWorker = req.user.is('AgentWorker');
     results.scopes.AssetAdmin = req.user.is('AssetAdmin');
     results.scopes.AssetViewer = req.user.is('AssetViewer');
 
