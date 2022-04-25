@@ -21,7 +21,15 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@fuse": [
+        "projects/fuse/index.ts"
+      ],
+      "@fuse/*": [
+        "projects/fuse/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
