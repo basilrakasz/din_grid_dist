@@ -30,3 +30,7 @@ mta_archives/
 # .idea
 
 Makefile_*.mta
+
+mta-op-*/
+
+resources/

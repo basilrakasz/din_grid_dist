@@ -1,104 +1,212 @@
----
-_schema-version: '3.1'
+# yaml-language-server: $schema=https://github.com/SAP/cloud-mta/blob/master/validations/schema/schema_v3.1.yaml
+
+_schema-version: "3.1"
 ID: din_grid_dist
+description: DIN - Grid Distributor
 version: 1.0.0
-description: "DIN - Grid Distributor"
+modules:
+  - name: din_grid_dist-srv
+    type: nodejs
+    path: gen/srv
+    properties:
+      SUBSCRIPTION_URL: ${protocol}://\${tenant_subdomain}-${default-uri}
+      SUBSCRIPTION_URL_REPLACEMENT_RULES:
+        - - -srv
+          - ""
+    requires:
+      - name: din_grid_dist-auth
+      - name: din_grid_dist-db
+      - name: din_grid_dist-registry
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+      - name: mtx-api
+        properties:
+          mtx-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+  - name: din_grid_dist
+    type: approuter.nodejs
+    path: app/
+    properties:
+      TENANT_HOST_PATTERN: (.*)-${default-uri}
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          name: srv-api
+          url: ~{srv-url}
+      - name: mtx-api
+        group: destinations
+        properties:
+          name: mtx-api
+          url: ~{mtx-url}
+      - name: din_grid_dist-auth
+      - name: din_grid_dist-destination
+        group: destinations
+        properties:
+          forwardAuthToken: false
+          name: ui5
+          url: https://ui5.sap.com
+    #      - name: din_grid_dist-html5-repo-rt
+    #      - name: din_grid_dist-registry
+    parameters:
+      disk-quota: 1024M
+      keep-existing-routes: true
+      memory: 256M
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run install:angular
+        - npm run build:angular
+        - npm run copy:angular
+      ignore:
+        - service-agents-app/
+  - name: din_grid_dist-destinations
+    type: com.sap.application.content
+    requires:
+      - name: din_grid_dist-auth
+        parameters:
+          service-key:
+            name: din_grid_dist-auth-key
+      - name: din_grid_dist-html5-repo-host
+        parameters:
+          service-key:
+            name: din_grid_dist-html5-repo-host-key
+      - name: srv-api
+      - name: din_grid_dist-destination
+        parameters:
+          content-target: true
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Authentication: OAuth2UserTokenExchange
+              Name: din_grid_dist-srv
+              TokenServiceInstanceName: din_grid_dist-auth
+              TokenServiceKeyName: din_grid_dist-auth-key
+              URL: ~{srv-api/srv-url}
+              sap.cloud.service: din_grid_dist.service
+            - Name: din_grid_dist-html5-repo-host
+              ServiceInstanceName: din_grid_dist-html5-repo-host
+              ServiceKeyName: din_grid_dist-html5-repo-host-key
+              sap.cloud.service: din_grid_dist.service
+            - Authentication: OAuth2UserTokenExchange
+              Name: din_grid_dist-auth
+              ServiceInstanceName: din_grid_dist-auth
+              ServiceKeyName: din_grid_dist-auth-key
+              sap.cloud.service: din_grid_dist.service
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+  - name: din_grid_dist-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: din_grid_dist-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - nsbuildings.zip
+          name: nsbuildings
+          target-path: resources/
+        - artifacts:
+            - nspremisespremises.zip
+          name: nspremisespremises
+          target-path: resources/
+  - name: nsbuildings
+    type: html5
+    path: app/resources/grid-distributor/buildings
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: [ ]
+  - name: nspremisespremises
+    type: html5
+    path: app/resources/grid-distributor/premises
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: [ ]
+resources:
+  - name: din_grid_dist-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        tenant-mode: shared
+        xsappname: din_grid_dist-${org}-${space}
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: din_grid_dist-db
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: service-manager
+      service-plan: container
+  - name: din_grid_dist-registry
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        appName: din_grid_dist-${org}-${space}
+        appUrls:
+          callbackTimeoutMillis: 300000
+          getDependencies: ~{mtx-api/mtx-url}/mtx/v1/provisioning/dependencies
+          onSubscription: ~{mtx-api/mtx-url}/mtx/v1/provisioning/tenant/{tenantId}
+          onSubscriptionAsync: false
+          onUnSubscriptionAsync: false
+        category: Category
+        description: Digital Installation Network
+        displayName: DIN - Grid Distributor
+        xsappname: din_grid_dist-${org}-${space}
+      service: saas-registry
+      service-plan: application
+    requires:
+      - name: mtx-api
+  - name: din_grid_dist-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+      service: destination
+      service-plan: lite
+  - name: din_grid_dist-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+#  - name: din_grid_dist-html5-repo-rt
+#    type: org.cloudfoundry.managed-service
+#    parameters:
+#      service: html5-apps-repo
+#      service-plan: app-runtime
 parameters:
+  deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
     - builder: custom
       commands:
         - npx -p @sap/cds-dk cds build --production
-        - npx rimraf gen/db/src/gen/data #to remove all CSV Testdata otherwise, production tables would get overwritten!!
-
-modules:
-  - name: din_grid_dist-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-      - name: mtx-api # potentially required by approuter
-        properties:
-          mtx-url: ${default-url}
-    requires:
-      - name: din_grid_dist-auth
-      - name: din_grid_dist-db
-      - name: din_grid_dist-registry
-    properties:
-      SUBSCRIPTION_URL: ${protocol}://\${tenant_subdomain}-${default-uri}
-      SUBSCRIPTION_URL_REPLACEMENT_RULES: [ [ '-srv', '' ] ]
-
-  - name: din_grid_dist
-    type: approuter.nodejs
-    path: app/ # from cds.env.folders. Consider also cds.env.build.target -> gen/app
-    # TODO better way?
-    build-parameters:
-      builder: custom
-      ignore: [ "service-agents-app/" ]
-      commands:
-        - npm run install:angular
-        - npm run build:angular
-        - npm run copy:angular
-    parameters:
-      keep-existing-routes: true
-      disk-quota: 256M
-      memory: 256M
-    properties:
-      TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
-    requires:
-      - name: srv-api
-        group: destinations
-        properties:
-          name: srv-api # must be used in xs-app.json as well
-          url: ~{srv-url}
-          forwardAuthToken: true
-      - name: mtx-api
-        group: destinations
-        properties:
-          name: mtx-api # must be used in xs-app.json as well
-          url: ~{mtx-url}
-      - name: din_grid_dist-auth
-
-resources:
-  - name: din_grid_dist-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: din_grid_dist-${org}-${space}
-        tenant-mode: shared
-
-  - name: din_grid_dist-db
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: service-manager
-      service-plan: container
-
-  - name: din_grid_dist-registry
-    type: org.cloudfoundry.managed-service
-    requires:
-      - name: mtx-api
-    parameters:
-      service: saas-registry
-      service-plan: application
-      config:
-        xsappname: din_grid_dist-${org}-${space}
-        appName: din_grid_dist-${org}-${space}
-        displayName: DIN - Grid Distributor
-        description: Digital Installation Network
-        category: 'Category'
-        appUrls:
-          getDependencies: ~{mtx-api/mtx-url}/mtx/v1/provisioning/dependencies
-          onSubscription: ~{mtx-api/mtx-url}/mtx/v1/provisioning/tenant/{tenantId}
-          onSubscriptionAsync: false
-          onUnSubscriptionAsync: false
-          callbackTimeoutMillis: 300000
+        - npx rimraf gen/db/src/gen/data
