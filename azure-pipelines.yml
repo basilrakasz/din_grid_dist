@@ -3,17 +3,25 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+resources:
+  containers:
+  - container: mta
+    image: 'ghcr.io/sap/mbtci-java11-node14:latest'
+    options: --user 0:0
+
 trigger:
 - master
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: build
+  displayName: Build MTA for SAP Business Technology Platform
+  jobs:
+    - job: build
+      container: mta
+      steps:
+        - bash: 'mbt build -p=cf -t=mta_archives --mtar=din-cap.mtar'
+        - publish: $(System.DefaultWorkingDirectory)/mta_archives
+          artifact: MTA
