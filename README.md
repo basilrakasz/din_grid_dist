@@ -13,6 +13,17 @@ File or Folder | Purpose
 `readme.md` | this getting started guide
 
 
+# Build and deploy commands
+## Build Command:
+```
+mbt build -p=cf -t=mta_archives --mtar=din_grid_dist.mtar
+```
+
+## Deploy Command:
+```
+cf deploy mta_archives/din_grid_dist.mtar -f
+```
+
 ## Next Steps
 
 - Open a new terminal and run `cds watch` 

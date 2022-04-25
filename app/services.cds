@@ -1,2 +1,2 @@
-using from './buildings/annotations';
-using from './premises/annotations';
+using from './resources/buildings/annotations';
+using from './resources/premises/annotations';
