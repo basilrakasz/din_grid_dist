@@ -33,4 +33,4 @@ Makefile_*.mta
 
 mta-op-*/
 
-resources/
+/resources/
