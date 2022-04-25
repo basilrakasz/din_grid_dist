@@ -1,8 +1,8 @@
 {
   "name": "din_grid_dist",
   "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
+  "description": "DIN - Grid Distributor",
+  "repository": "coming soon...",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {

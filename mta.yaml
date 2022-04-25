@@ -2,7 +2,7 @@
 _schema-version: '3.1'
 ID: din_grid_dist
 version: 1.0.0
-description: "A simple CAP project."
+description: "DIN - Grid Distributor"
 parameters:
   enable-parallel-deployments: true
 build-parameters:
@@ -11,7 +11,6 @@ build-parameters:
       commands:
         - npx -p @sap/cds-dk cds build --production
         - npx rimraf gen/db/src/gen/data #to remove all CSV Testdata otherwise, production tables would get overwritten!!
-
 
 modules:
   - name: din_grid_dist-srv
@@ -86,8 +85,8 @@ resources:
       config:
         xsappname: din_grid_dist-${org}-${space}
         appName: din_grid_dist-${org}-${space}
-        displayName: din_grid_dist
-        description: A simple CAP project.
+        displayName: DIN - Grid Distributor
+        description: Digital Installation Network
         category: 'Category'
         appUrls:
           getDependencies: ~{mtx-api/mtx-url}/mtx/v1/provisioning/dependencies
