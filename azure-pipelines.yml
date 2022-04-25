@@ -8,6 +8,9 @@ resources:
   - container: mta
     image: 'ghcr.io/sap/mbtci-java11-node14:latest'
     options: --user 0:0
+  - container: cfcli
+    image: 'ppiper/cf-cli'
+    options: --user 0:0 --privileged
 
 trigger:
 - master
@@ -22,6 +25,19 @@ stages:
     - job: build
       container: mta
       steps:
-        - bash: 'mbt build -p=cf -t=mta_archives --mtar=din-cap.mtar'
+        - bash: 'mbt build -p=cf -t=mta_archives --mtar=din_grid_dist.mtar'
         - publish: $(System.DefaultWorkingDirectory)/mta_archives
           artifact: MTA
+
+# TODO would be better using Azure DevOps Releases, however not available for MTA
+- stage: deploy
+  displayName: Deployment to SAP Business Technology Platform (cf)
+  jobs:
+    - job: deploy
+      pool:
+        vmImage: 'ubuntu-latest'
+      container: cfcli
+      steps:
+        - download: current
+          artifact: MTA 
+        - bash: 'cf login -u "$(CF-USER)" -p "$(CF-PASSWORD)" -a "$(CF-API)" -o "$(CF-ORG)" -s "$(CF-SPACE)" && cf deploy $(Pipeline.Workspace)/din_grid_dist.mtar -f'
