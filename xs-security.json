@@ -59,6 +59,22 @@
       "attribute-references": []
     },
     {
+      "name": "AgentAdmin",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.AgentAdmin"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "AgentWorker",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.AgentWorker"
+      ],
+      "attribute-references": []
+    },
+    {
       "name": "MultitenancyAdministrator",
       "description": "Administrate multitenant applications",
       "scope-references": [
