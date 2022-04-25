@@ -38,6 +38,14 @@ modules:
   - name: din_grid_dist
     type: approuter.nodejs
     path: app/ # from cds.env.folders. Consider also cds.env.build.target -> gen/app
+    # TODO better way?
+    build-parameters:
+      builder: custom
+      ignore: [ "service-agents-app/" ]
+      commands:
+        - npm run install:angular
+        - npm run build:angular
+        - npm run copy:angular
     parameters:
       keep-existing-routes: true
       disk-quota: 256M

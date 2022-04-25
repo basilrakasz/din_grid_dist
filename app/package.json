@@ -7,6 +7,9 @@
     "node": "^16"
   },
   "scripts": {
-    "start": "node node_modules/@sap/approuter/approuter.js"
+    "start": "node node_modules/@sap/approuter/approuter.js",
+    "install:angular": "cd service-agents-app && npm install --production",
+    "build:angular": "cd service-agents-app && npm run build -- --base-href=/app/service-agent/",
+    "copy:angular": "npx cpx \"service-agents-app/dist/app/**\" resources/service-agent"
   }
 }

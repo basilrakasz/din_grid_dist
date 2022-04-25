@@ -1,2 +1,2 @@
-using from './resources/buildings/annotations';
-using from './resources/premises/annotations';
+using from './resources/grid-distributor/buildings/annotations';
+using from './resources/grid-distributor/premises/annotations';
