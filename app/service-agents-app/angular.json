@@ -7,7 +7,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:application": {
           "strict": true
@@ -15,7 +16,7 @@
       },
       "root": "projects/app",
       "sourceRoot": "projects/app/src",
-      "prefix": "app",
+      "prefix": "din",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -31,7 +32,12 @@
               "projects/app/src/assets"
             ],
             "styles": [
-              "projects/app/src/styles.scss"
+              "projects/fuse/styles/tailwind.scss",
+              "projects/fuse/styles/themes.scss",
+              "projects/app/src/styles/vendors.scss",
+              "projects/fuse/styles/main.scss",
+              "projects/app/src/styles/styles.scss",
+              "projects/app/src/styles/tailwind.scss"
             ],
             "scripts": []
           },

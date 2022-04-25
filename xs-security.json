@@ -9,6 +9,14 @@
       "description": "AssetManager"
     },
     {
+      "name": "$XSAPPNAME.AgentAdmin",
+      "description": "AgentAdmin"
+    },
+    {
+      "name": "$XSAPPNAME.AgentWorker",
+      "description": "AgentWorker"
+    },
+    {
       "name": "$XSAPPNAME.MtxDiagnose",
       "description": "Diagnose MTX"
     },
