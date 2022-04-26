@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate:odata": "generate-odata-client --inputDir projects/odata/edmx --outputDir projects/odata --forceOverwrite --generatePackageJson false"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +21,8 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
+    "@sap-cloud-sdk/core": "^1.54.0",
+    "@sap-cloud-sdk/odata-v4": "^2.3.0",
     "lodash-es": "^4.17.21",
     "perfect-scrollbar": "^1.5.5",
     "rxjs": "~7.5.0",
