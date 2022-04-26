@@ -12,19 +12,31 @@
       "source": "^/service-agent/(.*)",
       "target": "/serviceagentapp/$1",
       "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
+      "authenticationType": "xsuaa",
+      "scope": [
+        "$XSAPPNAME.AgentViewer",
+        "$XSAPPNAME.AgentWorker"
+      ]
     },
     {
       "source": "^/grid-distributor/premises/(.*)",
       "target": "/nspremisespremises/$1",
       "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
+      "authenticationType": "xsuaa",
+      "scope": [
+        "$XSAPPNAME.AssetViewer",
+        "$XSAPPNAME.AssetAdmin"
+      ]
     },
     {
       "source": "^/grid-distributor/buildings/(.*)",
       "target": "/nsbuildings/$1",
       "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
+      "authenticationType": "xsuaa",
+      "scope": [
+        "$XSAPPNAME.AssetViewer",
+        "$XSAPPNAME.AssetAdmin"
+      ]
     }
   ]
 }
