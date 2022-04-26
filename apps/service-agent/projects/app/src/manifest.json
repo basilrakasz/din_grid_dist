@@ -1,0 +1,8 @@
+{
+  "sap.app": {
+    "id": "service-agent-app",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 using from '../premises/annotations';
-using AssetsService as service from '../../../../srv/asset-structure';
+using AssetsService as service from '../../../srv/asset-structure';
 
 @odata.draft.enabled
 annotate AssetsService.Buildings with @(UI : {

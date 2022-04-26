@@ -30,7 +30,7 @@ modules:
       builder: npm-ci
   - name: din_grid_dist
     type: approuter.nodejs
-    path: app/
+    path: approuter/
     properties:
       TENANT_HOST_PATTERN: (.*)-${default-uri}
     requires:
@@ -46,63 +46,55 @@ modules:
           name: mtx-api
           url: ~{mtx-url}
       - name: din_grid_dist-auth
-      - name: din_grid_dist-destination
-        group: destinations
-        properties:
-          forwardAuthToken: false
-          name: ui5
-          url: https://ui5.sap.com
-    #      - name: din_grid_dist-html5-repo-rt
-    #      - name: din_grid_dist-registry
+      #      - name: din_grid_dist-destination
+      #        group: destinations
+      #        properties:
+      #          forwardAuthToken: false
+      #          name: ui5
+      #          url: https://ui5.sap.com
+      - name: din_grid_dist-html5-repo-rt
+      - name: din_grid_dist-registry
     parameters:
       disk-quota: 1024M
       keep-existing-routes: true
       memory: 256M
-    build-parameters:
-      builder: custom
-      commands:
-        - npm run install:angular
-        - npm run build:angular
-        - npm run copy:angular
-      ignore:
-        - service-agents-app/
-  - name: din_grid_dist-destinations
-    type: com.sap.application.content
-    requires:
-      - name: din_grid_dist-auth
-        parameters:
-          service-key:
-            name: din_grid_dist-auth-key
-      - name: din_grid_dist-html5-repo-host
-        parameters:
-          service-key:
-            name: din_grid_dist-html5-repo-host-key
-      - name: srv-api
-      - name: din_grid_dist-destination
-        parameters:
-          content-target: true
-    parameters:
-      content:
-        instance:
-          destinations:
-            - Authentication: OAuth2UserTokenExchange
-              Name: din_grid_dist-srv
-              TokenServiceInstanceName: din_grid_dist-auth
-              TokenServiceKeyName: din_grid_dist-auth-key
-              URL: ~{srv-api/srv-url}
-              sap.cloud.service: din_grid_dist.service
-            - Name: din_grid_dist-html5-repo-host
-              ServiceInstanceName: din_grid_dist-html5-repo-host
-              ServiceKeyName: din_grid_dist-html5-repo-host-key
-              sap.cloud.service: din_grid_dist.service
-            - Authentication: OAuth2UserTokenExchange
-              Name: din_grid_dist-auth
-              ServiceInstanceName: din_grid_dist-auth
-              ServiceKeyName: din_grid_dist-auth-key
-              sap.cloud.service: din_grid_dist.service
-          existing_destinations_policy: update
-    build-parameters:
-      no-source: true
+  #  - name: din_grid_dist-destinations
+  #    type: com.sap.application.content
+  #    requires:
+  #      - name: din_grid_dist-auth
+  #        parameters:
+  #          service-key:
+  #            name: din_grid_dist-auth-key
+  #      - name: din_grid_dist-html5-repo-host
+  #        parameters:
+  #          service-key:
+  #            name: din_grid_dist-html5-repo-host-key
+  #      - name: srv-api
+  #      - name: din_grid_dist-destination
+  #        parameters:
+  #          content-target: true
+  #    parameters:
+  #      content:
+  #        instance:
+  #          destinations:
+  #            - Authentication: OAuth2UserTokenExchange
+  #              Name: din_grid_dist-srv
+  #              TokenServiceInstanceName: din_grid_dist-auth
+  #              TokenServiceKeyName: din_grid_dist-auth-key
+  #              URL: ~{srv-api/srv-url}
+  #              sap.cloud.service: din_grid_dist.service
+  #            - Name: din_grid_dist-html5-repo-host
+  #              ServiceInstanceName: din_grid_dist-html5-repo-host
+  #              ServiceKeyName: din_grid_dist-html5-repo-host-key
+  #              sap.cloud.service: din_grid_dist.service
+  #            - Authentication: OAuth2UserTokenExchange
+  #              Name: din_grid_dist-auth
+  #              ServiceInstanceName: din_grid_dist-auth
+  #              ServiceKeyName: din_grid_dist-auth-key
+  #              sap.cloud.service: din_grid_dist.service
+  #          existing_destinations_policy: update
+  #    build-parameters:
+  #      no-source: true
   - name: din_grid_dist-app-content
     type: com.sap.application.content
     path: .
@@ -110,6 +102,7 @@ modules:
       - name: din_grid_dist-html5-repo-host
         parameters:
           content-target: true
+      - name: din_grid_dist-registry
     build-parameters:
       build-result: resources
       requires:
@@ -121,9 +114,17 @@ modules:
             - nspremisespremises.zip
           name: nspremisespremises
           target-path: resources/
+        - artifacts:
+            - nspremisespremises.zip
+          name: nspremisespremises
+          target-path: resources/
+        - artifacts:
+            - service-agent-app.zip
+          name: din_grid_dist-service-agent-html5-app
+          target-path: resources/
   - name: nsbuildings
     type: html5
-    path: app/resources/grid-distributor/buildings
+    path: apps/grid-distributor/buildings
     build-parameters:
       build-result: dist
       builder: custom
@@ -133,7 +134,7 @@ modules:
       supported-platforms: [ ]
   - name: nspremisespremises
     type: html5
-    path: app/resources/grid-distributor/premises
+    path: apps/grid-distributor/premises
     build-parameters:
       build-result: dist
       builder: custom
@@ -141,6 +142,18 @@ modules:
         - npm install
         - npm run build:cf
       supported-platforms: [ ]
+  - name: din_grid_dist-service-agent-html5-app
+    type: html5
+    path: apps/service-agent
+    build-parameters:
+      build-result: dist/app
+      builder: custom
+      commands:
+        - npm install # TODO consider using npm ci
+        - npm run build -- --base-href=/app/service-agent/
+        - npm run zip
+      supported-platforms: [ ]
+
 resources:
   - name: din_grid_dist-auth
     type: org.cloudfoundry.managed-service
@@ -175,32 +188,32 @@ resources:
       service-plan: application
     requires:
       - name: mtx-api
-  - name: din_grid_dist-destination
-    type: org.cloudfoundry.managed-service
-    parameters:
-      config:
-        HTML5Runtime_enabled: true
-        init_data:
-          instance:
-            destinations:
-              - Authentication: NoAuthentication
-                Name: ui5
-                ProxyType: Internet
-                Type: HTTP
-                URL: https://ui5.sap.com
-            existing_destinations_policy: update
-      service: destination
-      service-plan: lite
+  #  - name: din_grid_dist-destination
+  #    type: org.cloudfoundry.managed-service
+  #    parameters:
+  #      config:
+  #        HTML5Runtime_enabled: true
+  #        init_data:
+  #          instance:
+  #            destinations:
+  #              - Authentication: NoAuthentication
+  #                Name: ui5
+  #                ProxyType: Internet
+  #                Type: HTTP
+  #                URL: https://ui5.sap.com
+  #            existing_destinations_policy: update
+  #      service: destination
+  #      service-plan: lite
   - name: din_grid_dist-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
-#  - name: din_grid_dist-html5-repo-rt
-#    type: org.cloudfoundry.managed-service
-#    parameters:
-#      service: html5-apps-repo
-#      service-plan: app-runtime
+  - name: din_grid_dist-html5-repo-rt
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true

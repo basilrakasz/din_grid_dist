@@ -29,7 +29,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/app/src/favicon.ico",
-              "projects/app/src/assets"
+              "projects/app/src/assets",
+              "projects/app/src/manifest.json",
+              "projects/app/src/xs-app.json"
             ],
             "styles": [
               "projects/fuse/styles/tailwind.scss",
