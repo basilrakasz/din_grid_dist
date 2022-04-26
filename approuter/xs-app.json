@@ -2,39 +2,27 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^/(.*)$",
+      "source": "^/api/(.*)$",
       "target": "$1",
       "destination": "srv-api",
       "authenticationType": "xsuaa",
       "csrfProtection": true
     },
     {
-      "source": "^/app/grid-distributor/premises/(.*)$",
-      "target": "/nspremisespremises/$1",
-      "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
-    },
-    {
-      "source": "^/app/grid-distributor/buildings/(.*)$",
-      "target": "/nsbuildings/$1",
-      "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
-    },
-    {
-      "source": "^/app/service-agent/(.*)$",
+      "source": "^/service-agent/(.*)",
       "target": "/serviceagentapp/$1",
       "service": "html5-apps-repo-rt",
       "authenticationType": "xsuaa"
     },
     {
-      "source": "^/apps/(.*)$",
-      "target": "$1",
+      "source": "^/grid-distributor/premises/(.*)",
+      "target": "/nspremisespremises/$1",
       "service": "html5-apps-repo-rt",
       "authenticationType": "xsuaa"
     },
     {
-      "source": "/test/(.*)",
-      "target": "/serviceagentapp-1.0.0/$1",
+      "source": "^/grid-distributor/buildings/(.*)",
+      "target": "/nsbuildings/$1",
       "service": "html5-apps-repo-rt",
       "authenticationType": "xsuaa"
     }

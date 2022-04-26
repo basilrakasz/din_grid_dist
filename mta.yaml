@@ -4,6 +4,16 @@ _schema-version: "3.1"
 ID: din_grid_dist
 description: DIN - Grid Distributor
 version: 1.0.0
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx -p @sap/cds-dk cds build --production
+        - npx rimraf gen/db/src/gen/data
+
 modules:
   - name: din_grid_dist-srv
     type: nodejs
@@ -46,55 +56,12 @@ modules:
           name: mtx-api
           url: ~{mtx-url}
       - name: din_grid_dist-auth
-      #      - name: din_grid_dist-destination
-      #        group: destinations
-      #        properties:
-      #          forwardAuthToken: false
-      #          name: ui5
-      #          url: https://ui5.sap.com
       - name: din_grid_dist-html5-repo-rt
       - name: din_grid_dist-registry
     parameters:
       disk-quota: 1024M
       keep-existing-routes: true
       memory: 256M
-  #  - name: din_grid_dist-destinations
-  #    type: com.sap.application.content
-  #    requires:
-  #      - name: din_grid_dist-auth
-  #        parameters:
-  #          service-key:
-  #            name: din_grid_dist-auth-key
-  #      - name: din_grid_dist-html5-repo-host
-  #        parameters:
-  #          service-key:
-  #            name: din_grid_dist-html5-repo-host-key
-  #      - name: srv-api
-  #      - name: din_grid_dist-destination
-  #        parameters:
-  #          content-target: true
-  #    parameters:
-  #      content:
-  #        instance:
-  #          destinations:
-  #            - Authentication: OAuth2UserTokenExchange
-  #              Name: din_grid_dist-srv
-  #              TokenServiceInstanceName: din_grid_dist-auth
-  #              TokenServiceKeyName: din_grid_dist-auth-key
-  #              URL: ~{srv-api/srv-url}
-  #              sap.cloud.service: din_grid_dist.service
-  #            - Name: din_grid_dist-html5-repo-host
-  #              ServiceInstanceName: din_grid_dist-html5-repo-host
-  #              ServiceKeyName: din_grid_dist-html5-repo-host-key
-  #              sap.cloud.service: din_grid_dist.service
-  #            - Authentication: OAuth2UserTokenExchange
-  #              Name: din_grid_dist-auth
-  #              ServiceInstanceName: din_grid_dist-auth
-  #              ServiceKeyName: din_grid_dist-auth-key
-  #              sap.cloud.service: din_grid_dist.service
-  #          existing_destinations_policy: update
-  #    build-parameters:
-  #      no-source: true
   - name: din_grid_dist-app-content
     type: com.sap.application.content
     path: .
@@ -102,27 +69,33 @@ modules:
       - name: din_grid_dist-html5-repo-host
         parameters:
           content-target: true
-      - name: din_grid_dist-registry
     build-parameters:
       build-result: resources
       requires:
-        - artifacts:
-            - nsbuildings.zip
-          name: nsbuildings
-          target-path: resources/
-        - artifacts:
-            - nspremisespremises.zip
-          name: nspremisespremises
-          target-path: resources/
-        - artifacts:
-            - nspremisespremises.zip
-          name: nspremisespremises
-          target-path: resources/
-        - artifacts:
+        - name: din_grid_dist-service-agent-html5-app
+          artifacts:
             - service-agent-app.zip
-          name: din_grid_dist-service-agent-html5-app
           target-path: resources/
-  - name: nsbuildings
+        - name: din_grid_dist-grid-distributor-buildings-html5-app
+          artifacts:
+            - nsbuildings.zip
+          target-path: resources/
+        - name: din_grid_dist-grid-distributor-premises-html5-app
+          artifacts:
+            - nspremisespremises.zip
+          target-path: resources/
+  - name: din_grid_dist-service-agent-html5-app
+    type: html5
+    path: apps/service-agent
+    build-parameters:
+      build-result: dist/app
+      builder: custom
+      commands:
+        - npm install # TODO consider using npm ci
+        - npm run build -- --base-href=/service-agent/
+        - npm run zip
+      supported-platforms: [ ]
+  - name: din_grid_dist-grid-distributor-buildings-html5-app
     type: html5
     path: apps/grid-distributor/buildings
     build-parameters:
@@ -132,7 +105,7 @@ modules:
         - npm install
         - npm run build:cf
       supported-platforms: [ ]
-  - name: nspremisespremises
+  - name: din_grid_dist-grid-distributor-premises-html5-app
     type: html5
     path: apps/grid-distributor/premises
     build-parameters:
@@ -141,17 +114,6 @@ modules:
       commands:
         - npm install
         - npm run build:cf
-      supported-platforms: [ ]
-  - name: din_grid_dist-service-agent-html5-app
-    type: html5
-    path: apps/service-agent
-    build-parameters:
-      build-result: dist/app
-      builder: custom
-      commands:
-        - npm install # TODO consider using npm ci
-        - npm run build -- --base-href=/app/service-agent/
-        - npm run zip
       supported-platforms: [ ]
 
 resources:
@@ -188,38 +150,15 @@ resources:
       service-plan: application
     requires:
       - name: mtx-api
-  #  - name: din_grid_dist-destination
-  #    type: org.cloudfoundry.managed-service
-  #    parameters:
-  #      config:
-  #        HTML5Runtime_enabled: true
-  #        init_data:
-  #          instance:
-  #            destinations:
-  #              - Authentication: NoAuthentication
-  #                Name: ui5
-  #                ProxyType: Internet
-  #                Type: HTTP
-  #                URL: https://ui5.sap.com
-  #            existing_destinations_policy: update
-  #      service: destination
-  #      service-plan: lite
+
   - name: din_grid_dist-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
+
   - name: din_grid_dist-html5-repo-rt
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
-parameters:
-  deploy_mode: html5-repo
-  enable-parallel-deployments: true
-build-parameters:
-  before-all:
-    - builder: custom
-      commands:
-        - npx -p @sap/cds-dk cds build --production
-        - npx rimraf gen/db/src/gen/data
