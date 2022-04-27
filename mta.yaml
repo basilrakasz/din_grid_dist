@@ -86,7 +86,7 @@ modules:
           target-path: resources/
   - name: din_grid_dist-service-agent-html5-app
     type: html5
-    path: apps/service-agent
+    path: app/service-agent
     build-parameters:
       build-result: dist/app
       builder: custom
@@ -97,7 +97,7 @@ modules:
       supported-platforms: [ ]
   - name: din_grid_dist-grid-distributor-buildings-html5-app
     type: html5
-    path: apps/grid-distributor/buildings
+    path: app/grid-distributor/buildings
     build-parameters:
       build-result: dist
       builder: custom
@@ -107,7 +107,7 @@ modules:
       supported-platforms: [ ]
   - name: din_grid_dist-grid-distributor-premises-html5-app
     type: html5
-    path: apps/grid-distributor/premises
+    path: app/grid-distributor/premises
     build-parameters:
       build-result: dist
       builder: custom
