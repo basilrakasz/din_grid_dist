@@ -71,6 +71,18 @@ corresponding backend.
 Not sure if the `xs-app.json` inside the `premises`/`buildings` project should be recognized by
 the `approuter`. But if so, it would be better to add the route for the backend there.
 
+## Tutorials / Tasks
+
+### Deployment to SAP Fiori Launchpad
+
+The deployment to SAP Fiori Launchpad was already done, however it was removed due to not being
+multitenancy capable. Basically the Fiori Apps must be deployed to the HTML5 Repository Host (which
+is already done). However the destinations which are needed were removed.
+
+See
+commits [89b630c3](https://dev.azure.com/inpeek/Digital%20Installation%20Network(DIN)/_git/din_grid_dist/commit/89b630c325a536b37f734e3d6613c1bbe8c9e774?refName=refs/heads/master)
+and [20cec7dd](https://dev.azure.com/inpeek/Digital%20Installation%20Network(DIN)/_git/din_grid_dist/commit/20cec7dd879f199a07cbb32ae6b050c02bf36dd0?refName=refs/heads/master)
+
 ## Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
