@@ -45,8 +45,14 @@
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js';  // Included with Angular CLI.
+import 'zone.js'; // Included with Angular CLI.
 
+// needed because sap-cloud-sdk has dependencies to native node modules which need to be polyfilled
+// somehow more than listed in documentation (maybe due to different versions?)
+import 'setimmediate';
+
+(window as any).global = globalThis;
+global.Buffer = global.Buffer || require('buffer').Buffer;
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
