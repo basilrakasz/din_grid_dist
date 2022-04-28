@@ -92,7 +92,7 @@ modules:
       builder: custom
       commands:
         - npm install # TODO consider using npm ci
-        - npm run build -- --base-href=/service-agent/
+        - npm run build -- --base-href=/service-agent/index.html
         - npm run zip
       supported-platforms: [ ]
   - name: din_grid_dist-grid-distributor-buildings-html5-app
