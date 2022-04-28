@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="UserService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <FunctionImport Name="info" Function="UserService.info"/>
+      </EntityContainer>
+      <ComplexType Name="userScopes">
+        <Property Name="identified" Type="Edm.Boolean"/>
+        <Property Name="authenticated" Type="Edm.Boolean"/>
+        <Property Name="AssetAdmin" Type="Edm.Boolean"/>
+        <Property Name="AssetViewer" Type="Edm.Boolean"/>
+        <Property Name="AgentWorker" Type="Edm.Boolean"/>
+        <Property Name="AgentAdmin" Type="Edm.Boolean"/>
+      </ComplexType>
+      <ComplexType Name="user">
+        <Property Name="user" Type="Edm.String"/>
+        <Property Name="locale" Type="Edm.String"/>
+        <Property Name="tenant" Type="Edm.String"/>
+        <Property Name="scopes" Type="UserService.userScopes"/>
+        <Property Name="firstName" Type="Edm.String"/>
+        <Property Name="lastName" Type="Edm.String"/>
+        <Property Name="email" Type="Edm.String"/>
+      </ComplexType>
+      <Function Name="info" IsBound="false" IsComposable="false">
+        <ReturnType Type="UserService.user"/>
+      </Function>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

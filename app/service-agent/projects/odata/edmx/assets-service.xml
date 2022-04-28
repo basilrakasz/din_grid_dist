@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="AssetsService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Buildings" EntityType="AssetsService.Buildings">
+          <NavigationPropertyBinding Path="country" Target="Countries"/>
+          <NavigationPropertyBinding Path="premises" Target="Premises"/>
+          <NavigationPropertyBinding Path="installations" Target="Installations"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Buildings"/>
+        </EntitySet>
+        <EntitySet Name="Premises" EntityType="AssetsService.Premises">
+          <NavigationPropertyBinding Path="building" Target="Buildings"/>
+          <NavigationPropertyBinding Path="installations" Target="Installations"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Premises"/>
+        </EntitySet>
+        <EntitySet Name="Installations" EntityType="AssetsService.Installations">
+          <NavigationPropertyBinding Path="building" Target="Buildings"/>
+          <NavigationPropertyBinding Path="premise" Target="Premises"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Installations"/>
+        </EntitySet>
+        <EntitySet Name="Countries" EntityType="AssetsService.Countries">
+          <NavigationPropertyBinding Path="texts" Target="Countries_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Countries_texts"/>
+        </EntitySet>
+        <EntitySet Name="Countries_texts" EntityType="AssetsService.Countries_texts"/>
+      </EntityContainer>
+      <EntityType Name="Buildings">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="street" Type="Edm.String"/>
+        <Property Name="number" Type="Edm.String"/>
+        <Property Name="numberExtension" Type="Edm.String"/>
+        <Property Name="postalCode" Type="Edm.String"/>
+        <Property Name="city" Type="Edm.String"/>
+        <Property Name="region" Type="Edm.String"/>
+        <NavigationProperty Name="country" Type="AssetsService.Countries">
+          <ReferentialConstraint Property="country_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="country_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="egid" Type="Edm.String"/>
+        <NavigationProperty Name="premises" Type="Collection(AssetsService.Premises)" Partner="building"/>
+        <NavigationProperty Name="installations" Type="Collection(AssetsService.Installations)" Partner="building"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="AssetsService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="AssetsService.Buildings"/>
+      </EntityType>
+      <EntityType Name="Premises">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="floor" Type="Edm.String"/>
+        <Property Name="roomNumber" Type="Edm.String"/>
+        <Property Name="roomExtension" Type="Edm.String"/>
+        <Property Name="locationExtension" Type="Edm.String"/>
+        <Property Name="ewid" Type="Edm.String"/>
+        <NavigationProperty Name="building" Type="AssetsService.Buildings" Partner="premises">
+          <ReferentialConstraint Property="building_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="building_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="installations" Type="Collection(AssetsService.Installations)" Partner="premise"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="AssetsService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="AssetsService.Premises"/>
+      </EntityType>
+      <EntityType Name="Installations">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="validFrom" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="validTo" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="type" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="division" Type="Edm.String"/>
+        <NavigationProperty Name="building" Type="AssetsService.Buildings" Partner="installations">
+          <ReferentialConstraint Property="building_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="building_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="premise" Type="AssetsService.Premises" Partner="installations">
+          <ReferentialConstraint Property="premise_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="premise_ID" Type="Edm.Guid"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="AssetsService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="AssetsService.Installations"/>
+      </EntityType>
+      <EntityType Name="Countries">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(AssetsService.Countries_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="AssetsService.Countries_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="DraftAdministrativeData">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="Countries_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Buildings"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="AssetsService.Buildings"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Premises"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="AssetsService.Premises"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Installations"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="AssetsService.Installations"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Buildings"/>
+        <ReturnType Type="AssetsService.Buildings"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Premises"/>
+        <ReturnType Type="AssetsService.Premises"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Installations"/>
+        <ReturnType Type="AssetsService.Installations"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Buildings"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="AssetsService.Buildings"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Premises"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="AssetsService.Premises"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="AssetsService.Installations"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="AssetsService.Installations"/>
+      </Action>
+      <Annotations Target="AssetsService.Buildings">
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>street</PropertyPath>
+            <PropertyPath>postalCode</PropertyPath>
+            <PropertyPath>createdAt</PropertyPath>
+            <PropertyPath>createdBy</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="ID"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="street"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="egid"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="number"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="numberExtension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="street"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="postalCode"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="city"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="region"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="country/descr"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Building"/>
+            <PropertyValue Property="TypeNamePlural" String="Buildings"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="ID"/>
+                <PropertyValue Property="Label" String="Building"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="createdAt"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="createdBy"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="createdAt"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="ID"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="General"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Premises"/>
+              <PropertyValue Property="Target" AnnotationPath="premises/@UI.LineItem"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Admin"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Admin"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="General">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="description"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="egid"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="number"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="numberExtension"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="street"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="postalCode"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="city"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="region"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="country_code"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Admin">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdAt"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedAt"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AssetsService.EntityContainer/Buildings">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="AssetsService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="AssetsService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="AssetsService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Angelegt am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+        <Annotation Term="Common.Label" String="Angelegt von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Geändert am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+        <Annotation Term="Common.Label" String="Geändert von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/street">
+        <Annotation Term="Common.Label" String="Street"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/number">
+        <Annotation Term="Common.Label" String="HouseNumber"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/numberExtension">
+        <Annotation Term="Common.Label" String="HouserNumberExtension"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/postalCode">
+        <Annotation Term="Common.Label" String="PostalCode"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/city">
+        <Annotation Term="Common.Label" String="City"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/region">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/country">
+        <Annotation Term="Common.Label" String="Land"/>
+        <Annotation Term="Core.Description" String="Ländercode gemäß ISO 3166-1"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/country_code">
+        <Annotation Term="Common.Label" String="Land"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Land"/>
+            <PropertyValue Property="CollectionPath" String="Countries"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="country_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Ländercode gemäß ISO 3166-1"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/description">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/egid">
+        <Annotation Term="Common.Label" String="EGID"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Buildings/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises">
+        <Annotation Term="Common.SemanticObject" String="Building"/>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>description</PropertyPath>
+            <PropertyPath>ewid</PropertyPath>
+            <PropertyPath>createdAt</PropertyPath>
+            <PropertyPath>createdBy</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataFieldWithIntentBasedNavigation">
+              <PropertyValue Property="Value" Path="ID"/>
+              <PropertyValue Property="SemanticObject" String="Premise"/>
+              <PropertyValue Property="Action" String="manage"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="floor"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="roomNumber"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="roomExtension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="ewid"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="building_ID"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="IsActiveEntity"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Premise"/>
+            <PropertyValue Property="TypeNamePlural" String="Premises"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="ID"/>
+                <PropertyValue Property="Label" String="Premise"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="createdAt"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="createdBy"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="createdAt"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="ID"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="General"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Admin"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Admin"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="General">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="description"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="floor"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="roomNumber"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="roomExtension"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="ewid"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="IsActiveEntity"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="building/ID"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Admin">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdAt"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedAt"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AssetsService.EntityContainer/Premises">
+        <Annotation Term="Common.SemanticObject" String="Building"/>
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="AssetsService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="AssetsService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="AssetsService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Angelegt am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+        <Annotation Term="Common.Label" String="Angelegt von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Geändert am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+        <Annotation Term="Common.Label" String="Geändert von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/description">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/floor">
+        <Annotation Term="Common.Label" String="Floor"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/roomNumber">
+        <Annotation Term="Common.Label" String="RoomNumber"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/roomExtension">
+        <Annotation Term="Common.Label" String="RoomNumberExtension"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/locationExtension">
+        <Annotation Term="Common.Label" String="LocationExtension"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/ewid">
+        <Annotation Term="Common.Label" String="EWID"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/building">
+        <Annotation Term="Common.Label" String="Building"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/building_ID">
+        <Annotation Term="Common.Label" String="Building"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Premises/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.EntityContainer/Installations">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="AssetsService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="AssetsService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="AssetsService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Angelegt am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+        <Annotation Term="Common.Label" String="Angelegt von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Geändert am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+        <Annotation Term="Common.Label" String="Geändert von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/type">
+        <Annotation Term="Common.Label" String="InstallationType"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/description">
+        <Annotation Term="Common.Label" String="description"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/division">
+        <Annotation Term="Common.Label" String="Divison"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Installations/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Countries">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AssetsService.Countries/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Countries/descr">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Countries/code">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Ländercode"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData">
+        <Annotation Term="Common.Label" String="Verwaltungsdaten des Entwurfs"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/DraftUUID">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Entwurf (technische ID)"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/CreationDateTime">
+        <Annotation Term="Common.Label" String="Entwurf angelegt am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/CreatedByUser">
+        <Annotation Term="Common.Label" String="Entwurf angelegt von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/DraftIsCreatedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Entwurf angelegt von mir"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/LastChangeDateTime">
+        <Annotation Term="Common.Label" String="Entwurf zuletzt geändert am"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/LastChangedByUser">
+        <Annotation Term="Common.Label" String="Entwurf zuletzt geändert von"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/InProcessByUser">
+        <Annotation Term="Common.Label" String="Entwurf in Bearbeitung durch"/>
+      </Annotations>
+      <Annotations Target="AssetsService.DraftAdministrativeData/DraftIsProcessedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Entwurf in Bearbeitung durch mich"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Countries_texts/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Countries_texts/descr">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="AssetsService.Countries_texts/code">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Ländercode"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,1 @@
+{"version":3,"file":"function-imports.d.ts","sourceRoot":"","sources":["function-imports.ts"],"names":[],"mappings":"AAKA,OAAO,EAAkE,8BAA8B,EAA2B,MAAM,qBAAqB,CAAC;AAC9J,OAAO,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAC;AAE9B;;GAEG;AACH,MAAM,WAAW,cAAc;CAC9B;AAED;;;;;GAKG;AACH,wBAAgB,IAAI,CAAC,UAAU,EAAE,cAAc,GAAG,8BAA8B,CAAC,cAAc,EAAE,IAAI,CAAC,CAMrG;AAED,eAAO,MAAM,eAAe;;CAE3B,CAAC"}

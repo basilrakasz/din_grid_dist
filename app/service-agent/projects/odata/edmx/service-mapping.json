@@ -1,0 +1,12 @@
+{
+  "assets-service": {
+    "directoryName": "assets-service",
+    "servicePath": "/service/assets/",
+    "npmPackageName": "assets-service"
+  },
+  "user-service": {
+    "directoryName": "user-service",
+    "servicePath": "/user/",
+    "npmPackageName": "user-service"
+  }
+}
