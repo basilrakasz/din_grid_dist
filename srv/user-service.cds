@@ -4,7 +4,7 @@ service UserService {
      type userScopes {
           identified: Boolean;
           authenticated: Boolean;
-          AssetAdmin: Boolean;
+          AssetManager: Boolean;
           AssetViewer: Boolean;
           AgentWorker: Boolean;
           AgentAdmin: Boolean;

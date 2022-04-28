@@ -15,7 +15,7 @@ module.exports = cds.service.impl(async function() {
     results.scopes.authenticated = req.user.is('authenticated-user');
     results.scopes.AgentAdmin = req.user.is('AgentAdmin');
     results.scopes.AgentWorker = req.user.is('AgentWorker');
-    results.scopes.AssetAdmin = req.user.is('AssetAdmin');
+    results.scopes.AssetManager = req.user.is('AssetManager');
     results.scopes.AssetViewer = req.user.is('AssetViewer');
 
     // see https://answers.sap.com/questions/13321947/how-to-get-current-user-details-in-cap.html
