@@ -13,6 +13,13 @@
       "csrfProtection": true
     },
     {
+      "source": "^.*/user/(.*)$",
+      "target": "/user/$1",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa",
+      "csrfProtection": true
+    },
+    {
       "source": "^/service-agent/(.*)",
       "target": "/serviceagentapp/$1",
       "service": "html5-apps-repo-rt",
