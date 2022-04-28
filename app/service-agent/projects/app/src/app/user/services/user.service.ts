@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, of, ReplaySubject, tap } from 'rxjs';
+import { from, map, Observable, ReplaySubject, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
+import { info, User as CAPUser } from '@odata/user-service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -41,24 +43,24 @@ export class UserService {
    * Get the current logged in user data
    */
   get(): Observable<User> {
-    // TODO add http call
-    return of({
-      id: '1',
-      status: 'idk',
-      name: 'Fabian Küng',
-      email: 'fabian.kueng@inpeek.ch'
-    })
+    // TODO error handling
+    return from(
+      info({})
+        .execute({ url: environment.baseUrl }) // TODO use destination on prod?
+    )
       .pipe(
+        map<CAPUser, User>(user => ({
+          id: user.user,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          avatar: null,
+          status: null
+        })),
         tap((user) => {
           this._user.next(user);
         })
       );
-    // return this._httpClient.get<User>('api/common/user')
-    //   .pipe(
-    //     tap((user) => {
-    //       this._user.next(user);
-    //     })
-    //   );
   }
 
   /**
