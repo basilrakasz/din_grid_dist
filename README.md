@@ -83,6 +83,44 @@ See
 commits [89b630c3](https://dev.azure.com/inpeek/Digital%20Installation%20Network(DIN)/_git/din_grid_dist/commit/89b630c325a536b37f734e3d6613c1bbe8c9e774?refName=refs/heads/master)
 and [20cec7dd](https://dev.azure.com/inpeek/Digital%20Installation%20Network(DIN)/_git/din_grid_dist/commit/20cec7dd879f199a07cbb32ae6b050c02bf36dd0?refName=refs/heads/master)
 
+### Local Development & Testing
+
+Local testing was enabled by following the video tutorial from saphana
+academy: https://youtu.be/YCesXwyGG_8
+
+The following manually steps are necessary when setting up your development environment. The steps
+are described for the SAP Business Application Studio:
+
+- optional: Install BAS Plugin: "SAP Partner Engineering BAS Installer"
+- Find command (CTRL+SHIT+P) "BAS: Install CF DefaultEnv Plugin" and run it. The CF Plugin
+  DefaultEnv should now be installed
+    - It seems the plugin is not in the Community Repo anymore, then you'll have to install it from
+      the github repo: https://github.com/saphanaacademy/DefaultEnv
+    - alternative you can install the plugin using `cf install-plugin DefaultEnv`
+- In the root folder of the project run the command ``` cf de din_grid_dist-srv ``` for adding the
+  default-env.json automatically
+- In the approuter folder `approuter` run the command ``` cf de din_grid_dist ``` for adding the
+  default-env.json for the approuter
+- In the `approuter/default.env.json` add the Properties `TENANT_HOST`and `USE_EXTERNAL_PROXY`  and
+  make the url in the destinations parameter is set to `http://localhost:4004` according to the
+  follwing code snippet
+
+```
+"TENANT_HOST": "ipk-cons-1-dev-din-cap.cfapps.eu10.hana.ondemand.com",
+"EXTERNAL_REVERSE_PROXY": true,
+```
+
+- optional: if you'd like to develop cds locally, add/change property `destinations` (not tested)
+
+```
+"destinations": "[ {\n  \"forwardAuthToken\" : true,\n  \"name\" : \"srv-api\",\n  \"timeout\" : 60000,\n  \"url\" : \"http://localhost:4004\"\n} ]"
+```
+
+- optional: Run `cds watch --profile production` on root folder to start cap services in production
+  mode (as it would run when deployed on cf)
+- Run `npm run dev` in the app folder for starting the approuter
+- optional: start using angular locally using `npm start` in `app/service-agent` folder
+
 ## Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.

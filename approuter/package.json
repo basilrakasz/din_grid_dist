@@ -7,6 +7,7 @@
     "node": "^16"
   },
   "scripts": {
-    "start": "node node_modules/@sap/approuter/approuter.js"
+    "start": "node node_modules/@sap/approuter/approuter.js",
+    "dev": "node dev.js"
   }
 }
