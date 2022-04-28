@@ -22,21 +22,21 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         id: 'projects',
         title: 'Projekte',
         type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
+        icon: 'mat_outline:pending_actions',
         link: '/projects'
       },
       {
         id: 'create-notification',
         title: 'Meldung anlegen',
         type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
-        link: '/notification/create'
+        icon: 'mat_outline:build',
+        link: '/notifications/create'
       },
       {
         id: 'company',
         title: 'Firma',
         type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
+        icon: 'mat_outline:business',
         link: '/company'
       }
     ]

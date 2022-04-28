@@ -7,6 +7,18 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'projects',
+    loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule)
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./notifications/notifications.module').then(m => m.NotificationsModule)
+  },
+  {
+    path: 'company',
+    loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
   }
 ];
 
