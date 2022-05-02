@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './pages/projects/projects.component';
+import { LayoutModule } from '../layout/layout.module';
 
 
 @NgModule({
@@ -11,7 +12,9 @@ import { ProjectsComponent } from './pages/projects/projects.component';
   ],
   imports: [
     CommonModule,
-    ProjectsRoutingModule
+    ProjectsRoutingModule,
+    LayoutModule
   ]
 })
-export class ProjectsModule { }
+export class ProjectsModule {
+}

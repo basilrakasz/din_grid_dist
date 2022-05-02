@@ -9,13 +9,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { UserModule } from '../user/user.module';
 import { ClassyLayoutComponent } from './components/classy-layout/classy-layout.component';
+import { PageLayoutSimpleFullwidthComponent } from './components/page-layout-simple-fullwidth/page-layout-simple-fullwidth.component';
 
 
 @NgModule({
   declarations: [
     ClassyLayoutComponent,
     LayoutComponent,
-    UserComponent
+    UserComponent,
+    PageLayoutSimpleFullwidthComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { ClassyLayoutComponent } from './components/classy-layout/classy-layout.
   ],
   exports: [
     LayoutComponent,
-    UserComponent
+    UserComponent,
+    PageLayoutSimpleFullwidthComponent
   ]
 })
 export class LayoutModule {

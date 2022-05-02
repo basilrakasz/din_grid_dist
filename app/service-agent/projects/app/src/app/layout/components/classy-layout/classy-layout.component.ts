@@ -19,6 +19,13 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
   navigation: Partial<Navigation> = {
     default: [
       {
+        id: 'home',
+        title: 'Startseite',
+        type: 'basic',
+        icon: 'mat_outline:home',
+        link: '/home'
+      },
+      {
         id: 'projects',
         title: 'Projekte',
         type: 'basic',
