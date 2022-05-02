@@ -84,6 +84,10 @@ modules:
           artifacts:
             - nspremisespremises.zip
           target-path: resources/
+        - name: din_grid_dist-grid-distributor-launchpad-html5-app
+          artifacts:
+            - launchpad.zip
+          target-path: resources/
   - name: din_grid_dist-service-agent-html5-app
     type: html5
     path: app/service-agent
@@ -114,6 +118,15 @@ modules:
       commands:
         - npm install
         - npm run build:cf
+      supported-platforms: [ ]
+  - name: din_grid_dist-grid-distributor-launchpad-html5-app
+    type: html5
+    path: app/grid-distributor/launchpad
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npx bestzip dist/launchpad.zip *
       supported-platforms: [ ]
 
 resources:

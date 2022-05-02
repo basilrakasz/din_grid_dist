@@ -71,6 +71,25 @@ corresponding backend.
 Not sure if the `xs-app.json` inside the `premises`/`buildings` project should be recognized by
 the `approuter`. But if so, it would be better to add the route for the backend there.
 
+### CORS / Angular local development
+
+- proxy + approuter lokal gestartet
+
+### SAP Cloud SDK
+
+- workaround wegen node polyfills in Dateien   `polyfills.ts` und `node-webpack.config.js`
+- muss eine url gegeben werden, welche mit multitenancy?
+
+### useHash im Angular
+
+- wegen html5 repo welches versucht dort zu schauen anstatt an angular app weiterzuleiten
+- lösung: useHash
+
+### kein redirect zu /index.html im angular etc
+
+https://din-consumer-1-inpeek-sandbox-din-din-grid-dist.cfapps.eu10.hana.ondemand.com/service-agent/
+redirected nicht zu index.html
+
 ## Tutorials / Tasks
 
 ### Deployment to SAP Fiori Launchpad
@@ -120,6 +139,8 @@ are described for the SAP Business Application Studio:
   mode (as it would run when deployed on cf)
 - Run `npm run dev` in the app folder for starting the approuter
 - optional: start using angular locally using `npm start` in `app/service-agent` folder
+- open `localhost:5000` and login
+- optional: if angular is started locally, open `localhost:4200`
 
 ## Learn More
 
