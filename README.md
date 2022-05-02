@@ -125,7 +125,7 @@ are described for the SAP Business Application Studio:
   follwing code snippet
 
 ```
-"TENANT_HOST": "ipk-cons-1-dev-din-cap.cfapps.eu10.hana.ondemand.com",
+"TENANT_HOST": "din-consumer-1-inpeek-sandbox-din-din-grid-dist.cfapps.eu10.hana.ondemand.com",
 "EXTERNAL_REVERSE_PROXY": true,
 ```
 
