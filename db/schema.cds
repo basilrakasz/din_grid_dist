@@ -5,7 +5,8 @@ using {
     managed,
     temporal,
     Country,
-    Language
+    Language,
+    sap.common.CodeList
 } from '@sap/cds/common';
 
 aspect address {
@@ -22,23 +23,24 @@ entity Buildings : cuid, managed, address {
     description   : String @(title : '{i18n>Description}');
     egid          : String @(title : '{i18n>EGID}');
 
-    premises : Association to many Premises on premises.building = $self;
+    premises      : Association to many Premises
+                        on premises.building = $self;
 
     installations : Association to many Installations
                         on installations.building = $self;
-                        
+
     projects      : Association to many Buildings2Projects
                         on projects.building = $self;
 }
 
 entity Premises : cuid, managed {
-    description       : String @(title : '{i18n>Description}');
-    floor             : String @(title : '{i18n>Floor}');
-    roomNumber        : String @(title : '{i18n>RoomNumber}');
-    roomExtension     : String @(title : '{i18n>RoomNumberExtension}');
-    locationExtension : String @(title : '{i18n>LocationExtension}');
-    ewid              : String @(title : '{i18n>EWID}');
-    building          : Association to Buildings@(title : '{i18n>Building}');
+    description       : String                   @(title : '{i18n>Description}');
+    floor             : String                   @(title : '{i18n>Floor}');
+    roomNumber        : String                   @(title : '{i18n>RoomNumber}');
+    roomExtension     : String                   @(title : '{i18n>RoomNumberExtension}');
+    locationExtension : String                   @(title : '{i18n>LocationExtension}');
+    ewid              : String                   @(title : '{i18n>EWID}');
+    building          : Association to Buildings @(title : '{i18n>Building}');
 
     installations     : Association to many Installations
                             on installations.premise = $self;
@@ -64,11 +66,12 @@ entity Partners : cuid, managed, address {
 }
 
 entity Projects : cuid, managed {
-    name          : String @(title : '{i18n>Name}');
-    description   : String @(title : '{i18n>Description}');
+    name        : String @(title : '{i18n>Name}');
+    description : String @(title : '{i18n>Description}');
 
-    buildings     : Association to many Buildings2Projects
-                        on buildings.project = $self;
+    buildings   : Association to many Buildings2Projects
+                      on buildings.project = $self;
+    IaHeads     : Composition of many IaHeads
 /*    events        : Association to many Events
                         on events.project = $self;
     notifications : Association to many Notifications
@@ -80,11 +83,28 @@ entity Buildings2Projects {
     key project  : Association to Projects;
 }
 
-// entity IaHead {
+entity IaHeads : cuid, managed {
+    building         : Association to Buildings;
+    Partners         : Composition of many {
+                           key partner : Association to Partners;
+                       }
+    installationType : Association to InstallationTypes;
+    installationDesc : String    @(title : '{i18n>InstallationDescription}');
+    DesicionDesc     : String    @(title : '{i18n>DesicionDesc}');
+    DecisionDate     : Timestamp @(title : '{i18n>DesicionDate}');
+}
 
-// }
+entity IaDevices : cuid, managed {
+    customer     : Association to Partners;
+    premise      : Association to Premises;
+    deviceNumber : String @(title : '{i18n>DeviceNumber}');
+    DeviceActivity : Association to DeviceActivities;
+}
 
-// entity Ia_Partners{
-//     key partner : Association to Partners;
-//     key project : Association to Projects;
-// }
+entity InstallationTypes : CodeList {
+    key code : String(3) @(title : '{i18n>InstallationType}');
+}
+
+entity DeviceActivities : CodeList {
+    key code : String(3) @(title : '{i18n>DeviceActivity}');
+}

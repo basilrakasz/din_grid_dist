@@ -53,6 +53,7 @@ service AssetsService {
             to    : ['AssetManager']
         }
     ]) as projection on my.Projects;
+
     annotate Projects with @odata.draft.enabled;
 
     // TODO correct permissions, draft needed?
@@ -66,4 +67,41 @@ service AssetsService {
             to    : ['AssetManager']
         }
     ]) as projection on my.Partners;
+}
+
+@path : 'service/ia'
+service IaService {
+
+    entity IaHeads @(restrict : [
+        {
+            grant : ['READ'],
+            to    : ['AssetViewer']
+        },
+        {
+            grant : ['*'],
+            to    : ['AssetManager']
+        }
+    ]) as projection on my.IaHeads
+
+    annotate IaHeads with @odata.draft.enabled;
+
+    entity IaDevices @(restrict : [
+        {
+            grant : ['READ'],
+            to    : ['AssetViewer']
+        },
+        {
+            grant : ['*'],
+            to    : ['AssetManager']
+        }
+    ]) as projection on my.IaDevices
+
+    annotate IaDevices with @odata.draft.enabled;
+
+    @(readonly, requires : 'authenticated-user' )
+    entity InstallationTypes as projection on my.InstallationTypes;
+    
+    @(readonly, requires : 'authenticated-user' )
+    entity DeviceActivities as projection on my.DeviceActivities;
+
 }
