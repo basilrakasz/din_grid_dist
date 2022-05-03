@@ -84,6 +84,10 @@ modules:
           artifacts:
             - nspremisespremises.zip
           target-path: resources/
+        - name: din_grid_dist-grid-distributor-projects-html5-app
+          artifacts:
+            - nsprojects.zip
+          target-path: resources/
         - name: din_grid_dist-grid-distributor-launchpad-html5-app
           artifacts:
             - launchpad.zip
@@ -112,6 +116,16 @@ modules:
   - name: din_grid_dist-grid-distributor-premises-html5-app
     type: html5
     path: app/grid-distributor/premises
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: [ ]
+  - name: din_grid_dist-grid-distributor-projects-html5-app
+    type: html5
+    path: app/grid-distributor/projects
     build-parameters:
       build-result: dist
       builder: custom
