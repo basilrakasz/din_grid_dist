@@ -56,19 +56,19 @@ annotate AssetsService.Premises with @(
         {Value : roomExtension},
         {Value : ewid},
         {Value : IsActiveEntity, },
-        {Value : building.ID},
-        // {
-        //     //not working due to the fact that Navigation is writing corresponding fields from this faced to filter
-        //     //Probable workarounds: https://ui5.sap.com/#/topic/2c65f07f44094012a511d6bd83f50f2d
-        //     // or https://ui5.sap.com/#/topic/c337d8bde8c544598969c8e4edaab262
-        //     // or Semantic Annotation of UI/Srv ??
-        //     //https://help.sap.com/docs/ABAP_PLATFORM_BW4HANA/468a97775123488ab3345a0c48cadd8f/307ced1bc98c4e3d93ecbe9658dc9176.html?locale=en-US
-        //     //or se CAP_CLOUD_SAMPLES ->Fiori Bookshop
-        //     $Type          : 'UI.DataFieldWithIntentBasedNavigation',
-        //     Value          : building.ID,
-        //     SemanticObject : 'Building',
-        //     Action         : 'manage'
-        // },
+        // {Value : building_ID},
+        {
+            //not working due to the fact that Navigation is writing corresponding fields from this faced to filter
+            //Probable workarounds: https://ui5.sap.com/#/topic/2c65f07f44094012a511d6bd83f50f2d
+            // or https://ui5.sap.com/#/topic/c337d8bde8c544598969c8e4edaab262
+            // or Semantic Annotation of UI/Srv ??
+            //https://help.sap.com/docs/ABAP_PLATFORM_BW4HANA/468a97775123488ab3345a0c48cadd8f/307ced1bc98c4e3d93ecbe9658dc9176.html?locale=en-US
+            //or se CAP_CLOUD_SAMPLES ->Fiori Bookshop
+            $Type          : 'UI.DataFieldWithIntentBasedNavigation',
+            Value          : building_ID,
+            SemanticObject : 'Building',
+            Action         : 'manage'
+        },
     ]},
     FieldGroup #Admin   : {Data : [
         {Value : createdBy},

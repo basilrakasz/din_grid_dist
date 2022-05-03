@@ -32,7 +32,6 @@ entity Buildings : cuid, managed, address {
     projects      : Association to many Buildings2Projects
                         on projects.building = $self;
 }
-
 entity Premises : cuid, managed {
     description       : String                   @(title : '{i18n>Description}');
     floor             : String                   @(title : '{i18n>Floor}');

@@ -1,7 +1,7 @@
 using from '../premises/annotations';
 using AssetsService as service from '../../../srv/asset-structure';
 
-@odata.draft.enabled
+@(odata.draft.enabled, cds.odata.valuelist)
 annotate AssetsService.Buildings with @(UI : {
     SelectionFields     : [
         street,
@@ -36,6 +36,7 @@ annotate AssetsService.Buildings with @(UI : {
         {Value : createdBy, },
         {Value : createdAt, },
         {Value : ID},
+        {Value : description},
     ],
     Facets              : [
         {
