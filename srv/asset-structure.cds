@@ -53,6 +53,7 @@ service AssetsService {
             to    : ['AssetManager']
         }
     ]) as projection on my.Projects;
+    annotate Projects with @odata.draft.enabled;
 
     // TODO correct permissions, draft needed?
     entity Partners @(restrict : [

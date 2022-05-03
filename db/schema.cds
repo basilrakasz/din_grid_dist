@@ -46,7 +46,7 @@ entity Premises : cuid, managed {
 
 entity Installations : cuid, managed, temporal {
     type        : String @(title : '{i18n>InstallationType}');
-    description : String @(title : '{i18n>description}');
+    description : String @(title : '{i18n>Description}');
     division    : String @(title : '{i18n>Divison}');
     building    : Association to Buildings;
     premise     : Association to Premises;
@@ -64,8 +64,8 @@ entity Partners : cuid, managed, address {
 }
 
 entity Projects : cuid, managed {
-    name          : String;
-    description   : String;
+    name          : String @(title : '{i18n>Name}');
+    description   : String @(title : '{i18n>Description}');
 
     buildings     : Association to many Buildings2Projects
                         on buildings.project = $self;
@@ -79,3 +79,12 @@ entity Buildings2Projects {
     key building : Association to Buildings;
     key project  : Association to Projects;
 }
+
+// entity IaHead {
+
+// }
+
+// entity Ia_Partners{
+//     key partner : Association to Partners;
+//     key project : Association to Projects;
+// }
