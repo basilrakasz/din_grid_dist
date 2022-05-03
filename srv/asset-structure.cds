@@ -42,4 +42,27 @@ service AssetsService {
 
     annotate Installations with @odata.draft.enabled;
 
+    // TODO correct permissions, draft needed?
+    entity Projects @(restrict : [
+        {
+            grant : ['READ'],
+            to    : ['AssetViewer']
+        },
+        {
+            grant : ['*'],
+            to    : ['AssetManager']
+        }
+    ]) as projection on my.Projects;
+
+    // TODO correct permissions, draft needed?
+    entity Partners @(restrict : [
+        {
+            grant : ['READ'],
+            to    : ['AssetViewer']
+        },
+        {
+            grant : ['*'],
+            to    : ['AssetManager']
+        }
+    ]) as projection on my.Partners;
 }

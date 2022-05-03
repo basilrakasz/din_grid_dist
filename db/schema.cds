@@ -26,6 +26,9 @@ entity Buildings : cuid, managed, address {
 
     installations : Association to many Installations
                         on installations.building = $self;
+                        
+    projects      : Association to many Buildings2Projects
+                        on projects.building = $self;
 }
 
 entity Premises : cuid, managed {
@@ -47,4 +50,32 @@ entity Installations : cuid, managed, temporal {
     division    : String @(title : '{i18n>Divison}');
     building    : Association to Buildings;
     premise     : Association to Premises;
+}
+
+entity Partners : cuid, managed, address {
+    firstName  : String;
+    middleName : String;
+    lastName   : String;
+    language   : Language;
+    company    : String;
+    email      : String;
+    phone      : String;
+    birthday   : Date;
+}
+
+entity Projects : cuid, managed {
+    name          : String;
+    description   : String;
+
+    buildings     : Association to many Buildings2Projects
+                        on buildings.project = $self;
+/*    events        : Association to many Events
+                        on events.project = $self;
+    notifications : Association to many Notifications
+                        on notifications.project = $self;*/
+}
+
+entity Buildings2Projects {
+    key building : Association to Buildings;
+    key project  : Association to Projects;
 }
