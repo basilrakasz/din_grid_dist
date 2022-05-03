@@ -98,6 +98,36 @@
       ]
     }
   ],
+  "role-collections": [
+    {
+      "name": "DIN_AgentAdmin",
+      "description": "DIN - Service Agent Admin",
+      "role-template-references": [
+        "$XSAPPNAME.AgentAdmin"
+      ]
+    },
+    {
+      "name": "DIN_AgentWorker",
+      "description": "DIN - Service Agent Worker",
+      "role-template-references": [
+        "$XSAPPNAME.AgentWorker"
+      ]
+    },
+    {
+      "name": "DIN_AssetManager",
+      "description": "DIN - Grid Distributor Asset Manager",
+      "role-template-references": [
+        "$XSAPPNAME.AssetManager"
+      ]
+    },
+    {
+      "name": "DIN_AssetViewer",
+      "description": "DIN - Grid Distributor Asset Viewer",
+      "role-template-references": [
+        "$XSAPPNAME.AssetViewer"
+      ]
+    }
+  ],
   "authorities": [
     "$XSAPPNAME.MtxDiagnose",
     "$XSAPPNAME.mtdeployment",
