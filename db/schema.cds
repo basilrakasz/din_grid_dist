@@ -22,16 +22,18 @@ aspect address {
 entity Buildings : cuid, managed, address {
     description   : String @(title : '{i18n>Description}');
     egid          : String @(title : '{i18n>EGID}');
-
     premises      : Association to many Premises
                         on premises.building = $self;
-
     installations : Association to many Installations
                         on installations.building = $self;
-
     projects      : Association to many Buildings2Projects
                         on projects.building = $self;
+                            Partners    : Composition of many {
+                      key partner : Association to Partners;
+                          role    : String;
+                  }
 }
+
 entity Premises : cuid, managed {
     description       : String                   @(title : '{i18n>Description}');
     floor             : String                   @(title : '{i18n>Floor}');
@@ -40,7 +42,6 @@ entity Premises : cuid, managed {
     locationExtension : String                   @(title : '{i18n>LocationExtension}');
     ewid              : String                   @(title : '{i18n>EWID}');
     building          : Association to Buildings @(title : '{i18n>Building}');
-
     installations     : Association to many Installations
                             on installations.premise = $self;
 }
@@ -67,10 +68,13 @@ entity Partners : cuid, managed, address {
 entity Projects : cuid, managed {
     name        : String @(title : '{i18n>Name}');
     description : String @(title : '{i18n>Description}');
-
+    Partners    : Composition of many {
+                      key partner : Association to Partners;
+                          role    : String;
+                  }
     buildings   : Association to many Buildings2Projects
                       on buildings.project = $self;
-    IaHeads     : Composition of many IaHeads
+    IaHeads     : Composition of many IaHeads;
 /*    events        : Association to many Events
                         on events.project = $self;
     notifications : Association to many Notifications
@@ -83,21 +87,27 @@ entity Buildings2Projects {
 }
 
 entity IaHeads : cuid, managed {
-    building         : Association to Buildings;
-    Partners         : Composition of many {
-                           key partner : Association to Partners;
-                       }
-    installationType : Association to InstallationTypes;
     installationDesc : String    @(title : '{i18n>InstallationDescription}');
     DesicionDesc     : String    @(title : '{i18n>DesicionDesc}');
     DecisionDate     : Timestamp @(title : '{i18n>DesicionDate}');
+    project          : Association to Projects;
+    building         : Association to Buildings;
+    installationType : Association to InstallationTypes;
+    Partners         : Composition of many {
+                           key partner : Association to Partners;
+                               role    : String;
+                       }
 }
 
 entity IaDevices : cuid, managed {
-    customer     : Association to Partners;
-    premise      : Association to Premises;
-    deviceNumber : String @(title : '{i18n>DeviceNumber}');
+    customer       : Association to Partners;
+    premise        : Association to Premises;
+    deviceNumber   : String @(title : '{i18n>DeviceNumber}');
     DeviceActivity : Association to DeviceActivities;
+    Partners       : Composition of many {
+                         key partner : Association to Partners;
+                             role    : String;
+                     }
 }
 
 entity InstallationTypes : CodeList {
