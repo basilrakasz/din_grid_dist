@@ -67,7 +67,26 @@ annotate AssetsService.Premises with @(
             $Type          : 'UI.DataFieldWithIntentBasedNavigation',
             Value          : building_ID,
             SemanticObject : 'Building',
-            Action         : 'manage'
+            Action         : 'manage',
+            Mapping : [
+                // problem that fiori elements adds all fields from the premise to the target url (intent)
+                // this means that the ID from premise is sent instead of the building and thus
+                // navigating to the BuildingsList instead of BuildingsObjectPage
+                // this workaround removes the ID from the url at first (from the premise)
+                // and then adds the building_id as ID for the navigation
+                // due to this workaround, it correctly navigates to the BuildingsObjectPage
+                // TODO same should be done with the IsActiveEntity
+                {
+                    $Type : 'Common.SemanticObjectMappingType',
+                    LocalProperty : 'ID',
+                    SemanticObjectProperty : 'test' // removes from the URL because not known
+                },
+                {
+                    $Type : 'Common.SemanticObjectMappingType',
+                    LocalProperty : 'building_ID', // adds building_ID as ID to the intent-url
+                    SemanticObjectProperty : 'ID'
+                }
+            ]
             },
         ]},
         FieldGroup #Admin   : {Data : [
