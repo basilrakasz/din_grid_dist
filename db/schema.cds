@@ -70,7 +70,7 @@ entity Projects : cuid, managed {
 
     buildings   : Association to many Buildings2Projects
                       on buildings.project = $self;
-    IaHeads     : Composition of many IaHeads
+    IaHeads     : Composition of many IaHeads on IaHeads.Project = $self;
 /*    events        : Association to many Events
                         on events.project = $self;
     notifications : Association to many Notifications
@@ -87,6 +87,7 @@ entity IaHeads : cuid, managed {
     Partners         : Composition of many {
                            key partner : Association to Partners;
                        }
+    Project          : Association to  Projects;
     installationType : Association to InstallationTypes;
     installationDesc : String    @(title : '{i18n>InstallationDescription}');
     DesicionDesc     : String    @(title : '{i18n>DesicionDesc}');
