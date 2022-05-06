@@ -76,7 +76,7 @@ entity Projects : cuid, managed {
     buildings   : Association to many Buildings2Projects
                       on buildings.project = $self;
 
-    IaHeads     : Composition of many IaHeads on IaHeads.Project = $self;
+    IaHeads     : Composition of many IaHeads on IaHeads.project = $self;
 /*    events        : Association to many Events
                         on events.project = $self;
     notifications : Association to many Notifications
