@@ -48,3 +48,10 @@ entity Installations : cuid, managed, temporal {
     building    : Association to Buildings;
     premise     : Association to Premises;
 }
+
+@cds.persistence.exists
+entity Projects : cuid, managed {
+    name          : String;
+    description   : String;
+
+}

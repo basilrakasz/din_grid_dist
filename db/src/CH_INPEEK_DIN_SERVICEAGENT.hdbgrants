@@ -1,0 +1,14 @@
+{
+    "din_service_agent-db-hdi": {
+        "object_owner": {
+            "container_roles": [
+                "CH_INPEEK_DIN_SERVICEAGENT_EXTERNAL_ACCESS_G#"
+            ]
+        },
+        "application_user": {
+            "container_roles": [
+                "CH_INPEEK_DIN_SERVICEAGENT_EXTERNAL_ACCESS"
+            ]
+        }
+    }
+}
