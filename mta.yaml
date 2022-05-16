@@ -26,6 +26,7 @@ modules:
     requires:
       - name: din_grid_dist-auth
       - name: din_grid_dist-db
+      - name: din_global-db #Enable Global/Shared DB
       - name: din_grid_dist-registry
     provides:
       - name: srv-api

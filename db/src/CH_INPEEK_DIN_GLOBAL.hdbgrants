@@ -1,5 +1,5 @@
 {
-    "din_global-db-hdi": {
+    "din_global-db": {
         "object_owner": {
             "container_roles": [
                 "CH_INPEEK_DIN_GLOBAL_ACCESS_G#"
