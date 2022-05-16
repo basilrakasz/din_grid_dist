@@ -67,6 +67,9 @@
                 "approuter": {
                     "kind": "cloudfoundry"
                 },
+                "din_global-db": {
+                    "kind": "hana"
+                },
                 "multitenancy": true
             },
             "db": {
