@@ -1,0 +1,14 @@
+{
+    "din_global-db-hdi": {
+        "object_owner": {
+            "container_roles": [
+                "CH_INPEEK_DIN_GLOBAL_ACCESS_G#"
+            ]
+        },
+        "application_user": {
+            "container_roles": [
+                "CH_INPEEK_DIN_GLOBAL_ACCESS"
+            ]
+        }
+    }
+}

@@ -119,3 +119,9 @@ entity InstallationTypes : CodeList {
 entity DeviceActivities : CodeList {
     key code : String(3) @(title : '{i18n>DeviceActivity}');
 }
+
+@cds.persistence.exists 
+entity ServiceAgents : cuid, managed {
+    Name : String @(title : '{i18n>ServiceAgentName}');    
+    IASGroup : String;
+}

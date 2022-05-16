@@ -1,0 +1,8 @@
+{
+    "CH_INPEEK_DIN_GRIDDIST_SERVICEAGENTS": {
+        "target": {
+            "object": "CH_INPEEK_DIN_GLOBAL_SERVICEAGENTS",
+            "schema.configure": "din_global-db-hdi/schema"
+        }
+    }
+}
