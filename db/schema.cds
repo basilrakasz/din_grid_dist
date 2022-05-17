@@ -29,10 +29,10 @@ entity Buildings : cuid, managed, address {
     projects      : Association to many Buildings2Projects
                         on projects.building = $self;
 
-    Partners    : Composition of many {
+    Partners      : Composition of many {
                         key partner : Association to Partners;
                             role    : String;
-    }
+                    }
 }
 
 entity Premises : cuid, managed {
@@ -76,7 +76,8 @@ entity Projects : cuid, managed {
     buildings   : Association to many Buildings2Projects
                       on buildings.project = $self;
 
-    IaHeads     : Composition of many IaHeads on IaHeads.project = $self;
+    IaHeads     : Composition of many IaHeads
+                      on IaHeads.project = $self;
 /*    events        : Association to many Events
                         on events.project = $self;
     notifications : Association to many Notifications
@@ -99,9 +100,11 @@ entity IaHeads : cuid, managed {
                            key partner : Association to Partners;
                                role    : String;
                        }
+    IaDevices        : Composition of many IaDevices;
 }
 
 entity IaDevices : cuid, managed {
+    key IaHead     : Association to IaHeads;
     customer       : Association to Partners;
     premise        : Association to Premises;
     deviceNumber   : String @(title : '{i18n>DeviceNumber}');
@@ -120,8 +123,8 @@ entity DeviceActivities : CodeList {
     key code : String(3) @(title : '{i18n>DeviceActivity}');
 }
 
-@cds.persistence.exists 
+@cds.persistence.exists
 entity ServiceAgents : cuid, managed {
-    Name : String @(title : '{i18n>ServiceAgentName}');    
+    Name     : String @(title : '{i18n>ServiceAgentName}');
     IASGroup : String;
 }

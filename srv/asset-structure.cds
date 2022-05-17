@@ -96,8 +96,6 @@ service IaService {
         }
     ]) as projection on my.IaDevices
 
-    annotate IaDevices with @odata.draft.enabled;
-
     @(readonly, requires : 'authenticated-user' )
     entity InstallationTypes as projection on my.InstallationTypes;
     
