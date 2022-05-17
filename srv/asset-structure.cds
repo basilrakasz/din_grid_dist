@@ -105,3 +105,10 @@ service IaService {
     entity DeviceActivities as projection on my.DeviceActivities;
 
 }
+
+@path : 'service/global'
+service GlobalService{
+
+entity ServiceAgents as projection on my.ServiceAgents;
+
+}

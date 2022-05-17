@@ -26,6 +26,7 @@ modules:
     requires:
       - name: din_grid_dist-auth
       - name: din_grid_dist-db
+      - name: din_global-db #Enable Global/Shared DB
       - name: din_grid_dist-registry
     provides:
       - name: srv-api
@@ -189,3 +190,11 @@ resources:
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
+
+ #Ressource: Global DIN Database (HDI)
+  - name: din_global-db
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: din_global-db
+    properties: 
+      din_global-db-hdi: ${service-name}
