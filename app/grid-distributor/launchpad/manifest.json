@@ -1,0 +1,8 @@
+{
+  "sap.app": {
+    "id": "grid-distributor-launchpad",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  }
+}

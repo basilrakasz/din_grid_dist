@@ -20,6 +20,17 @@
       "csrfProtection": true
     },
     {
+      "source": "^/service-agent/index.html$",
+      "target": "/serviceagentapp/index.html",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache",
+      "scope": [
+        "$XSAPPNAME.AgentAdmin",
+        "$XSAPPNAME.AgentWorker"
+      ]
+    },
+    {
       "source": "^/service-agent/(.*)",
       "target": "/serviceagentapp/$1",
       "service": "html5-apps-repo-rt",
@@ -42,6 +53,26 @@
     {
       "source": "^/grid-distributor/buildings/(.*)",
       "target": "/nsbuildings/$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa",
+      "scope": [
+        "$XSAPPNAME.AssetViewer",
+        "$XSAPPNAME.AssetManager"
+      ]
+    },
+    {
+      "source": "^/grid-distributor/projects/(.*)",
+      "target": "/nsprojects/$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa",
+      "scope": [
+        "$XSAPPNAME.AssetViewer",
+        "$XSAPPNAME.AssetManager"
+      ]
+    },
+    {
+      "source": "^/grid-distributor/launchpad/(.*)",
+      "target": "/griddistributorlaunchpad/$1",
       "service": "html5-apps-repo-rt",
       "authenticationType": "xsuaa",
       "scope": [

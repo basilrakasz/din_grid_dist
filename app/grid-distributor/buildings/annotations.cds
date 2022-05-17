@@ -1,18 +1,21 @@
 using from '../premises/annotations';
 using AssetsService as service from '../../../srv/asset-structure';
 
-@odata.draft.enabled
+@(
+    odata.draft.enabled,
+    cds.odata.valuelist
+)
 annotate AssetsService.Buildings with @(UI : {
     SelectionFields     : [
         street,
+        number,
         postalCode,
+        region,
         createdAt,
         createdBy
     ],
     LineItem            : [
         {Value : ID, },
-        {Value : description, },
-        {Value : street, },
         {Value : description},
         {Value : egid},
         {Value : number},
@@ -36,6 +39,7 @@ annotate AssetsService.Buildings with @(UI : {
         {Value : createdBy, },
         {Value : createdAt, },
         {Value : ID},
+        {Value : description},
     ],
     Facets              : [
         {
@@ -71,7 +75,9 @@ annotate AssetsService.Buildings with @(UI : {
         {Value : modifiedBy},
         {Value : modifiedAt}
     ]}
-}, );
+}, ) {
+    createdAt   @UI.HiddenFilter : false;
+};
 
 @odata.draft.enabled
 annotate AssetsService.Premises with @(UI : {

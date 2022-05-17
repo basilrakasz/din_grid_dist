@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="AssetsService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Buildings" EntityType="AssetsService.Buildings">
+                    <NavigationPropertyBinding Path="country" Target="Countries"/>
+                    <NavigationPropertyBinding Path="premises" Target="Premises"/>
+                    <NavigationPropertyBinding Path="installations" Target="Installations"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Buildings"/>
+                </EntitySet>
+                <EntitySet Name="Premises" EntityType="AssetsService.Premises">
+                    <NavigationPropertyBinding Path="building" Target="Buildings"/>
+                    <NavigationPropertyBinding Path="installations" Target="Installations"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Premises"/>
+                </EntitySet>
+                <EntitySet Name="Installations" EntityType="AssetsService.Installations">
+                    <NavigationPropertyBinding Path="building" Target="Buildings"/>
+                    <NavigationPropertyBinding Path="premise" Target="Premises"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Installations"/>
+                </EntitySet>
+                <EntitySet Name="Projects" EntityType="AssetsService.Projects"/>
+                <EntitySet Name="Partners" EntityType="AssetsService.Partners">
+                    <NavigationPropertyBinding Path="country" Target="Countries"/>
+                    <NavigationPropertyBinding Path="language" Target="Languages"/>
+                </EntitySet>
+                <EntitySet Name="Countries" EntityType="AssetsService.Countries">
+                    <NavigationPropertyBinding Path="texts" Target="Countries_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Countries_texts"/>
+                </EntitySet>
+                <EntitySet Name="Languages" EntityType="AssetsService.Languages">
+                    <NavigationPropertyBinding Path="texts" Target="Languages_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Languages_texts"/>
+                </EntitySet>
+                <EntitySet Name="Countries_texts" EntityType="AssetsService.Countries_texts"/>
+                <EntitySet Name="Languages_texts" EntityType="AssetsService.Languages_texts"/>
+            </EntityContainer>
+            <EntityType Name="Buildings">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="street" Type="Edm.String"/>
+                <Property Name="number" Type="Edm.String"/>
+                <Property Name="numberExtension" Type="Edm.String"/>
+                <Property Name="postalCode" Type="Edm.String"/>
+                <Property Name="city" Type="Edm.String"/>
+                <Property Name="region" Type="Edm.String"/>
+                <NavigationProperty Name="country" Type="AssetsService.Countries">
+                    <ReferentialConstraint Property="country_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="country_code" Type="Edm.String" MaxLength="3"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="egid" Type="Edm.String"/>
+                <NavigationProperty Name="premises" Type="Collection(AssetsService.Premises)" Partner="building"/>
+                <NavigationProperty Name="installations" Type="Collection(AssetsService.Installations)" Partner="building"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="AssetsService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="AssetsService.Buildings"/>
+            </EntityType>
+            <EntityType Name="Premises">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="floor" Type="Edm.String"/>
+                <Property Name="roomNumber" Type="Edm.String"/>
+                <Property Name="roomExtension" Type="Edm.String"/>
+                <Property Name="locationExtension" Type="Edm.String"/>
+                <Property Name="ewid" Type="Edm.String"/>
+                <NavigationProperty Name="building" Type="AssetsService.Buildings" Partner="premises">
+                    <ReferentialConstraint Property="building_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="building_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="installations" Type="Collection(AssetsService.Installations)" Partner="premise"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="AssetsService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="AssetsService.Premises"/>
+            </EntityType>
+            <EntityType Name="Installations">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="validFrom" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="validTo" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="division" Type="Edm.String"/>
+                <NavigationProperty Name="building" Type="AssetsService.Buildings" Partner="installations">
+                    <ReferentialConstraint Property="building_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="building_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="premise" Type="AssetsService.Premises" Partner="installations">
+                    <ReferentialConstraint Property="premise_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="premise_ID" Type="Edm.Guid"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="AssetsService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="AssetsService.Installations"/>
+            </EntityType>
+            <EntityType Name="Projects">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="description" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Partners">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="street" Type="Edm.String"/>
+                <Property Name="number" Type="Edm.String"/>
+                <Property Name="numberExtension" Type="Edm.String"/>
+                <Property Name="postalCode" Type="Edm.String"/>
+                <Property Name="city" Type="Edm.String"/>
+                <Property Name="region" Type="Edm.String"/>
+                <NavigationProperty Name="country" Type="AssetsService.Countries">
+                    <ReferentialConstraint Property="country_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="country_code" Type="Edm.String" MaxLength="3"/>
+                <Property Name="firstName" Type="Edm.String"/>
+                <Property Name="middleName" Type="Edm.String"/>
+                <Property Name="lastName" Type="Edm.String"/>
+                <NavigationProperty Name="language" Type="AssetsService.Languages">
+                    <ReferentialConstraint Property="language_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="language_code" Type="Edm.String" MaxLength="14"/>
+                <Property Name="company" Type="Edm.String"/>
+                <Property Name="email" Type="Edm.String"/>
+                <Property Name="phone" Type="Edm.String"/>
+                <Property Name="birthday" Type="Edm.Date"/>
+            </EntityType>
+            <EntityType Name="Countries">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <NavigationProperty Name="texts" Type="Collection(AssetsService.Countries_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="AssetsService.Countries_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Languages">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <NavigationProperty Name="texts" Type="Collection(AssetsService.Languages_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="AssetsService.Languages_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="DraftAdministrativeData">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="Countries_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="Languages_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="14" Nullable="false"/>
+            </EntityType>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Buildings"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="AssetsService.Buildings"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Premises"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="AssetsService.Premises"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Installations"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="AssetsService.Installations"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Buildings"/>
+                <ReturnType Type="AssetsService.Buildings"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Premises"/>
+                <ReturnType Type="AssetsService.Premises"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Installations"/>
+                <ReturnType Type="AssetsService.Installations"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Buildings"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="AssetsService.Buildings"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Premises"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="AssetsService.Premises"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="AssetsService.Installations"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="AssetsService.Installations"/>
+            </Action>
+            <Annotations Target="AssetsService.EntityContainer/Buildings">
+                <Annotation Term="Common.DraftRoot">
+                    <Record Type="Common.DraftRootType">
+                        <PropertyValue Property="ActivationAction" String="AssetsService.draftActivate"/>
+                        <PropertyValue Property="EditAction" String="AssetsService.draftEdit"/>
+                        <PropertyValue Property="PreparationAction" String="AssetsService.draftPrepare"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="AssetsService.Buildings/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="AssetsService.Buildings/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="AssetsService.Buildings/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="AssetsService.Buildings/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="AssetsService.Buildings/street">
+                                        <Annotation Term="Common.Label" String="{i18n>Street}"/>
+                                        </Annotations>
+                                        <Annotations Target="AssetsService.Buildings/number">
+                                            <Annotation Term="Common.Label" String="{i18n>HouseNumber}"/>
+                                            </Annotations>
+                                            <Annotations Target="AssetsService.Buildings/numberExtension">
+                                                <Annotation Term="Common.Label" String="{i18n>HouserNumberExtension}"/>
+                                                </Annotations>
+                                                <Annotations Target="AssetsService.Buildings/postalCode">
+                                                    <Annotation Term="Common.Label" String="{i18n>PostalCode}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="AssetsService.Buildings/city">
+                                                        <Annotation Term="Common.Label" String="{i18n>City}"/>
+                                                        </Annotations>
+                                                        <Annotations Target="AssetsService.Buildings/region">
+                                                            <Annotation Term="Common.Label" String="{i18n>Region}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="AssetsService.Buildings/country">
+                                                                <Annotation Term="Common.Label" String="{i18n>Country}"/>
+                                                                    <Annotation Term="Core.Description" String="{i18n>CountryCode.Description}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="AssetsService.Buildings/country_code">
+                                                                        <Annotation Term="Common.Label" String="{i18n>Country}"/>
+                                                                            <Annotation Term="Common.ValueList">
+                                                                                <Record Type="Common.ValueListType">
+                                                                                    <PropertyValue Property="Label" String="{i18n>Country}"/>
+                                                                                        <PropertyValue Property="CollectionPath" String="Countries"/>
+                                                                                        <PropertyValue Property="Parameters">
+                                                                                            <Collection>
+                                                                                                <Record Type="Common.ValueListParameterInOut">
+                                                                                                    <PropertyValue Property="LocalDataProperty" PropertyPath="country_code"/>
+                                                                                                    <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                </Record>
+                                                                                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                    <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                </Record>
+                                                                                            </Collection>
+                                                                                        </PropertyValue>
+                                                                                    </Record>
+                                                                                </Annotation>
+                                                                                <Annotation Term="Core.Description" String="{i18n>CountryCode.Description}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="AssetsService.Buildings/description">
+                                                                                    <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="AssetsService.Buildings/egid">
+                                                                                        <Annotation Term="Common.Label" String="{i18n>EGID}"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="AssetsService.Buildings/IsActiveEntity">
+                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="AssetsService.Buildings/HasActiveEntity">
+                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="AssetsService.Buildings/HasDraftEntity">
+                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="AssetsService.Buildings/DraftAdministrativeData">
+                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="AssetsService.EntityContainer/Premises">
+                                                                                            <Annotation Term="Common.DraftRoot">
+                                                                                                <Record Type="Common.DraftRootType">
+                                                                                                    <PropertyValue Property="ActivationAction" String="AssetsService.draftActivate"/>
+                                                                                                    <PropertyValue Property="EditAction" String="AssetsService.draftEdit"/>
+                                                                                                    <PropertyValue Property="PreparationAction" String="AssetsService.draftPrepare"/>
+                                                                                                </Record>
+                                                                                            </Annotation>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="AssetsService.Premises/createdAt">
+                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="AssetsService.Premises/createdBy">
+                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                    </Annotations>
+                                                                                                    <Annotations Target="AssetsService.Premises/modifiedAt">
+                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="AssetsService.Premises/modifiedBy">
+                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                </Annotations>
+                                                                                                                <Annotations Target="AssetsService.Premises/description">
+                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                    </Annotations>
+                                                                                                                    <Annotations Target="AssetsService.Premises/floor">
+                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Floor}"/>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="AssetsService.Premises/roomNumber">
+                                                                                                                            <Annotation Term="Common.Label" String="{i18n>RoomNumber}"/>
+                                                                                                                            </Annotations>
+                                                                                                                            <Annotations Target="AssetsService.Premises/roomExtension">
+                                                                                                                                <Annotation Term="Common.Label" String="{i18n>RoomNumberExtension}"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="AssetsService.Premises/locationExtension">
+                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>LocationExtension}"/>
+                                                                                                                                    </Annotations>
+                                                                                                                                    <Annotations Target="AssetsService.Premises/ewid">
+                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>EWID}"/>
+                                                                                                                                        </Annotations>
+                                                                                                                                        <Annotations Target="AssetsService.Premises/building">
+                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Building}"/>
+                                                                                                                                            </Annotations>
+                                                                                                                                            <Annotations Target="AssetsService.Premises/building_ID">
+                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Building}"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="AssetsService.Premises/IsActiveEntity">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="AssetsService.Premises/HasActiveEntity">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="AssetsService.Premises/HasDraftEntity">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="AssetsService.Premises/DraftAdministrativeData">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="AssetsService.EntityContainer/Installations">
+                                                                                                                                                    <Annotation Term="Common.DraftRoot">
+                                                                                                                                                        <Record Type="Common.DraftRootType">
+                                                                                                                                                            <PropertyValue Property="ActivationAction" String="AssetsService.draftActivate"/>
+                                                                                                                                                            <PropertyValue Property="EditAction" String="AssetsService.draftEdit"/>
+                                                                                                                                                            <PropertyValue Property="PreparationAction" String="AssetsService.draftPrepare"/>
+                                                                                                                                                        </Record>
+                                                                                                                                                    </Annotation>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="AssetsService.Installations/createdAt">
+                                                                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                                                                    </Annotations>
+                                                                                                                                                    <Annotations Target="AssetsService.Installations/createdBy">
+                                                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                                                            </Annotations>
+                                                                                                                                                            <Annotations Target="AssetsService.Installations/modifiedAt">
+                                                                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                                                                </Annotations>
+                                                                                                                                                                <Annotations Target="AssetsService.Installations/modifiedBy">
+                                                                                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                                                        </Annotations>
+                                                                                                                                                                        <Annotations Target="AssetsService.Installations/type">
+                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>InstallationType}"/>
+                                                                                                                                                                            </Annotations>
+                                                                                                                                                                            <Annotations Target="AssetsService.Installations/description">
+                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>description}"/>
+                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                <Annotations Target="AssetsService.Installations/division">
+                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Divison}"/>
+                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                    <Annotations Target="AssetsService.Installations/IsActiveEntity">
+                                                                                                                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                    <Annotations Target="AssetsService.Installations/HasActiveEntity">
+                                                                                                                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                    <Annotations Target="AssetsService.Installations/HasDraftEntity">
+                                                                                                                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                    <Annotations Target="AssetsService.Installations/DraftAdministrativeData">
+                                                                                                                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                    <Annotations Target="AssetsService.Projects/createdAt">
+                                                                                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                        <Annotations Target="AssetsService.Projects/createdBy">
+                                                                                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                <Annotations Target="AssetsService.Projects/modifiedAt">
+                                                                                                                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                    <Annotations Target="AssetsService.Projects/modifiedBy">
+                                                                                                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                            <Annotations Target="AssetsService.Partners/createdAt">
+                                                                                                                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                <Annotations Target="AssetsService.Partners/createdBy">
+                                                                                                                                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                        <Annotations Target="AssetsService.Partners/modifiedAt">
+                                                                                                                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                            <Annotations Target="AssetsService.Partners/modifiedBy">
+                                                                                                                                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Partners/street">
+                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Street}"/>
+                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                        <Annotations Target="AssetsService.Partners/number">
+                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>HouseNumber}"/>
+                                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                                            <Annotations Target="AssetsService.Partners/numberExtension">
+                                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>HouserNumberExtension}"/>
+                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                <Annotations Target="AssetsService.Partners/postalCode">
+                                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>PostalCode}"/>
+                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Partners/city">
+                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>City}"/>
+                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                        <Annotations Target="AssetsService.Partners/region">
+                                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Region}"/>
+                                                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                                                            <Annotations Target="AssetsService.Partners/country">
+                                                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Country}"/>
+                                                                                                                                                                                                                                                                    <Annotation Term="Core.Description" String="{i18n>CountryCode.Description}"/>
+                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Partners/country_code">
+                                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Country}"/>
+                                                                                                                                                                                                                                                                            <Annotation Term="Common.ValueList">
+                                                                                                                                                                                                                                                                                <Record Type="Common.ValueListType">
+                                                                                                                                                                                                                                                                                    <PropertyValue Property="Label" String="{i18n>Country}"/>
+                                                                                                                                                                                                                                                                                        <PropertyValue Property="CollectionPath" String="Countries"/>
+                                                                                                                                                                                                                                                                                        <PropertyValue Property="Parameters">
+                                                                                                                                                                                                                                                                                            <Collection>
+                                                                                                                                                                                                                                                                                                <Record Type="Common.ValueListParameterInOut">
+                                                                                                                                                                                                                                                                                                    <PropertyValue Property="LocalDataProperty" PropertyPath="country_code"/>
+                                                                                                                                                                                                                                                                                                    <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                                                                                                                                                                                                                </Record>
+                                                                                                                                                                                                                                                                                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                                                                                                                                                                                                                    <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                                                                                                                                                                                                                </Record>
+                                                                                                                                                                                                                                                                                            </Collection>
+                                                                                                                                                                                                                                                                                        </PropertyValue>
+                                                                                                                                                                                                                                                                                    </Record>
+                                                                                                                                                                                                                                                                                </Annotation>
+                                                                                                                                                                                                                                                                                <Annotation Term="Core.Description" String="{i18n>CountryCode.Description}"/>
+                                                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                                                <Annotations Target="AssetsService.Partners/language">
+                                                                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Language}"/>
+                                                                                                                                                                                                                                                                                        <Annotation Term="Core.Description" String="{i18n>LanguageCode.Description}"/>
+                                                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                                                        <Annotations Target="AssetsService.Partners/language_code">
+                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Language}"/>
+                                                                                                                                                                                                                                                                                                <Annotation Term="Common.ValueList">
+                                                                                                                                                                                                                                                                                                    <Record Type="Common.ValueListType">
+                                                                                                                                                                                                                                                                                                        <PropertyValue Property="Label" String="{i18n>Language}"/>
+                                                                                                                                                                                                                                                                                                            <PropertyValue Property="CollectionPath" String="Languages"/>
+                                                                                                                                                                                                                                                                                                            <PropertyValue Property="Parameters">
+                                                                                                                                                                                                                                                                                                                <Collection>
+                                                                                                                                                                                                                                                                                                                    <Record Type="Common.ValueListParameterInOut">
+                                                                                                                                                                                                                                                                                                                        <PropertyValue Property="LocalDataProperty" PropertyPath="language_code"/>
+                                                                                                                                                                                                                                                                                                                        <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                                                                                                                                                                                                                                    </Record>
+                                                                                                                                                                                                                                                                                                                    <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                                                                                                                                                                                                                                        <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                                                                                                                                                                                                                                    </Record>
+                                                                                                                                                                                                                                                                                                                </Collection>
+                                                                                                                                                                                                                                                                                                            </PropertyValue>
+                                                                                                                                                                                                                                                                                                        </Record>
+                                                                                                                                                                                                                                                                                                    </Annotation>
+                                                                                                                                                                                                                                                                                                    <Annotation Term="Core.Description" String="{i18n>LanguageCode.Description}"/>
+                                                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Countries">
+                                                                                                                                                                                                                                                                                                        <Annotation Term="UI.Identification">
+                                                                                                                                                                                                                                                                                                            <Collection>
+                                                                                                                                                                                                                                                                                                                <Record Type="UI.DataField">
+                                                                                                                                                                                                                                                                                                                    <PropertyValue Property="Value" Path="name"/>
+                                                                                                                                                                                                                                                                                                                </Record>
+                                                                                                                                                                                                                                                                                                            </Collection>
+                                                                                                                                                                                                                                                                                                        </Annotation>
+                                                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Countries/name">
+                                                                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                                                                        <Annotations Target="AssetsService.Countries/descr">
+                                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                                                                                                            <Annotations Target="AssetsService.Countries/code">
+                                                                                                                                                                                                                                                                                                                <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CountryCode}"/>
+                                                                                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                                                                                <Annotations Target="AssetsService.Languages">
+                                                                                                                                                                                                                                                                                                                    <Annotation Term="UI.Identification">
+                                                                                                                                                                                                                                                                                                                        <Collection>
+                                                                                                                                                                                                                                                                                                                            <Record Type="UI.DataField">
+                                                                                                                                                                                                                                                                                                                                <PropertyValue Property="Value" Path="name"/>
+                                                                                                                                                                                                                                                                                                                            </Record>
+                                                                                                                                                                                                                                                                                                                        </Collection>
+                                                                                                                                                                                                                                                                                                                    </Annotation>
+                                                                                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                                                                                <Annotations Target="AssetsService.Languages/name">
+                                                                                                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Languages/descr">
+                                                                                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                                                                                        <Annotations Target="AssetsService.Languages/code">
+                                                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                                                                                                                            <Annotations Target="AssetsService.DraftAdministrativeData">
+                                                                                                                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                                                                                                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                                                                                                <Annotations Target="AssetsService.DraftAdministrativeData/DraftUUID">
+                                                                                                                                                                                                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                                                                                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.DraftAdministrativeData/CreationDateTime">
+                                                                                                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                                                                                                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                                                                                                        <Annotations Target="AssetsService.DraftAdministrativeData/CreatedByUser">
+                                                                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                                                                                                                                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                                                                                                                                            <Annotations Target="AssetsService.DraftAdministrativeData/DraftIsCreatedByMe">
+                                                                                                                                                                                                                                                                                                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                                                                                                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                                                                                                                <Annotations Target="AssetsService.DraftAdministrativeData/LastChangeDateTime">
+                                                                                                                                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                                                                                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.DraftAdministrativeData/LastChangedByUser">
+                                                                                                                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                                                                                                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                                                                                                                        <Annotations Target="AssetsService.DraftAdministrativeData/InProcessByUser">
+                                                                                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                                                                                                                                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                                                                                                                                                            <Annotations Target="AssetsService.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                                                                                                                                                                                                                                                                                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                                                                                                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                                                                                                                                <Annotations Target="AssetsService.Countries_texts/name">
+                                                                                                                                                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Countries_texts/descr">
+                                                                                                                                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                                                                                                                                        <Annotations Target="AssetsService.Countries_texts/code">
+                                                                                                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>CountryCode}"/>
+                                                                                                                                                                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                                                                                                                                                                            <Annotations Target="AssetsService.Languages_texts/name">
+                                                                                                                                                                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                                                                                                                                                                                <Annotations Target="AssetsService.Languages_texts/descr">
+                                                                                                                                                                                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                                                                                                                                                                                    <Annotations Target="AssetsService.Languages_texts/code">
+                                                                                                                                                                                                                                                                                                                                                                                        <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                                                                                                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                                                                                                                                                                                    </Schema>
+                                                                                                                                                                                                                                                                                                                                                                                </edmx:DataServices>
+                                                                                                                                                                                                                                                                                                                                                                            </edmx:Edmx>

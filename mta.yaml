@@ -26,6 +26,7 @@ modules:
     requires:
       - name: din_grid_dist-auth
       - name: din_grid_dist-db
+      - name: din_global-db #Enable Global/Shared DB
       - name: din_grid_dist-registry
     provides:
       - name: srv-api
@@ -84,6 +85,14 @@ modules:
           artifacts:
             - nspremisespremises.zip
           target-path: resources/
+        - name: din_grid_dist-grid-distributor-projects-html5-app
+          artifacts:
+            - nsprojects.zip
+          target-path: resources/
+        - name: din_grid_dist-grid-distributor-launchpad-html5-app
+          artifacts:
+            - launchpad.zip
+          target-path: resources/
   - name: din_grid_dist-service-agent-html5-app
     type: html5
     path: app/service-agent
@@ -115,19 +124,25 @@ modules:
         - npm install
         - npm run build:cf
       supported-platforms: [ ]
- - name: din_service_agent-db-deployer
- # ------------------------------------------------------------
-   type: hdb
-   path: gen/db  
-   parameters:
-     buildpack: nodejs_buildpack
-   requires:
-    # 'hana' and 'xsuaa' resources extracted from CAP configuration     
-    - name: din_service_agent-db
-      group: SERVICE_REPLACEMENTS
-      properties:
-        key: din_service_agent-db-hdi
-        service: ~{din_service_agent-hdi}   
+  - name: din_grid_dist-grid-distributor-projects-html5-app
+    type: html5
+    path: app/grid-distributor/projects
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: [ ]
+  - name: din_grid_dist-grid-distributor-launchpad-html5-app
+    type: html5
+    path: app/grid-distributor/launchpad
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npx bestzip dist/launchpad.zip *
+      supported-platforms: [ ]
 
 resources:
   - name: din_grid_dist-auth
@@ -176,20 +191,10 @@ resources:
       service: html5-apps-repo
       service-plan: app-runtime
 
-
-# # ------------------------------------------------------------
-#  - name: din_service_agent-db
-# # ------------------------------------------------------------
-#    type: com.sap.xs.hdi-container
-#    parameters:
-#      service: hana  # or 'hanatrial' on trial landscapes
-#      service-plan: hdi-shared
-#    properties:
-#      hdi-service-name: ${service-name}
-
- - name: din_service_agent-db
-   type: org.cloudfoundry.existing-service
-   parameters:
-     service-name: din_service_agent-db  
-   properties:
-      din_service_agent-db-hdi: ${service-name}         
+ #Ressource: Global DIN Database (HDI)
+  - name: din_global-db
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: din_global-db
+    properties: 
+      din_global-db-hdi: ${service-name}

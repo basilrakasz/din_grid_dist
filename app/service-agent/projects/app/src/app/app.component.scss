@@ -1,3 +1,10 @@
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+}
+
 /* Base styles for components that load as a route */
 router-outlet {
   + * {

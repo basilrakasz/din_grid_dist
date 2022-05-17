@@ -32,9 +32,9 @@ cf deploy mta_archives/din_grid_dist.mtar -f
 - (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
 - Start adding content, for example, a [db/schema.cds](db/schema.cds).
 
-## Workarounds / Problems
+# Workarounds / Problems
 
-### SAP Fiori Service URL
+## SAP Fiori Service URL
 
 Due to the fact, that while building the SAP Fiori app (`premises` and `buildings`)
 the `ui5-builder` called by `npm run build:cf` strips the leading `/` of
@@ -71,9 +71,28 @@ corresponding backend.
 Not sure if the `xs-app.json` inside the `premises`/`buildings` project should be recognized by
 the `approuter`. But if so, it would be better to add the route for the backend there.
 
-## Tutorials / Tasks
+## CORS / Angular local development
 
-### Deployment to SAP Fiori Launchpad
+- proxy + approuter lokal gestartet
+
+## SAP Cloud SDK
+
+- workaround wegen node polyfills in Dateien   `polyfills.ts` und `node-webpack.config.js`
+- muss eine url gegeben werden, welche mit multitenancy?
+
+## useHash im Angular
+
+- wegen html5 repo welches versucht dort zu schauen anstatt an angular app weiterzuleiten
+- lösung: useHash
+
+## kein redirect zu /index.html im angular etc
+
+https://din-consumer-1-inpeek-sandbox-din-din-grid-dist.cfapps.eu10.hana.ondemand.com/service-agent/
+redirected nicht zu index.html
+
+# Tutorials / Tasks
+
+## Deployment to SAP Fiori Launchpad
 
 The deployment to SAP Fiori Launchpad was already done, however it was removed due to not being
 multitenancy capable. Basically the Fiori Apps must be deployed to the HTML5 Repository Host (which
@@ -83,7 +102,7 @@ See
 commits [89b630c3](https://dev.azure.com/inpeek/Digital%20Installation%20Network(DIN)/_git/din_grid_dist/commit/89b630c325a536b37f734e3d6613c1bbe8c9e774?refName=refs/heads/master)
 and [20cec7dd](https://dev.azure.com/inpeek/Digital%20Installation%20Network(DIN)/_git/din_grid_dist/commit/20cec7dd879f199a07cbb32ae6b050c02bf36dd0?refName=refs/heads/master)
 
-### Local Development & Testing
+## Local Development & Testing
 
 Local testing was enabled by following the video tutorial from saphana
 academy: https://youtu.be/YCesXwyGG_8
@@ -106,7 +125,7 @@ are described for the SAP Business Application Studio:
   follwing code snippet
 
 ```
-"TENANT_HOST": "ipk-cons-1-dev-din-cap.cfapps.eu10.hana.ondemand.com",
+"TENANT_HOST": "din-consumer-1-inpeek-sandbox-din-din-grid-dist.cfapps.eu10.hana.ondemand.com",
 "EXTERNAL_REVERSE_PROXY": true,
 ```
 
@@ -120,7 +139,43 @@ are described for the SAP Business Application Studio:
   mode (as it would run when deployed on cf)
 - Run `npm run dev` in the app folder for starting the approuter
 - optional: start using angular locally using `npm start` in `app/service-agent` folder
+- open `localhost:5000` and login
+- optional: if angular is started locally, open `localhost:4200`
 
-## Learn More
+## Access to global / shared database
+The global database schema and hdi container are implemented in git repo "din_global": https://dev.azure.com/inpeek/Digital%20Installation%20Network(DIN)/_git/din_global 
+
+For accessing global data and entities the following prerequesites have to be met: 
+### din_global Repo
+The following files have to contain all tables which should be accessible from the mtx aware database containers.
+- `db/src/CH_INPEEK_DIN_GLOBAL_ACCESS_G.hdbrole `
+- `db/src/CH_INPEEK_DIN_GLOBAL_ACCESS.hdbrole `
+
+Example: 
+```
+{
+    "role": {
+        "name": "CH_INPEEK_DIN_GLOBAL_ACCESS_G#",
+        "object_privileges": [
+            { 
+                "name":"CH_INPEEK_DIN_GLOBAL_SERVICEAGENTS", 
+                "type":"TABLE", 
+                "privileges":[], 
+                "privileges_with_grant_option":["SELECT"]
+            }                          
+        ]
+    }
+}
+```
+Where the name of a table has the following pattern [namespace with `_` instead of `.`]_[ENTITYNAME]
+
+### This repo (din_grid_dist)
+The following files have to be adjusted for every new Entity/Database table: 
+- `db/cfg/CH_INPEEK_DIN_GLOBAL.hdbsynonymconfig`
+- `db/src/CH_INPEEK_DIN_GLOBAL.hdbsynonym`
+
+Keep in mind the pattern with namespace & table/entity name (see chapter before "din_global Repo")
+
+# Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.

@@ -12,6 +12,7 @@ import { HomeComponent } from './home/components/home/home.component';
 import { LayoutModule } from './layout/layout.module';
 import { UserService } from './user/services/user.service';
 import { appConfig } from './core/config/app.config';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { appConfig } from './core/config/app.config';
     // TODO move config somewhere else
     FuseConfigModule.forRoot(appConfig),
     CoreModule,
-    LayoutModule
+    LayoutModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
