@@ -67,6 +67,32 @@ service AssetsService {
             to    : ['AssetManager']
         }
     ]) as projection on my.Partners;
+
+    
+    entity IaHeads @(restrict : [
+        {
+            grant : ['READ'],
+            to    : ['AssetViewer']
+        },
+        {
+            grant : ['*'],
+            to    : ['AssetManager']
+        }
+    ]) as projection on my.IaHeads
+
+    annotate IaHeads with @odata.draft.enabled;
+
+    entity IaDevices @(restrict : [
+        {
+            grant : ['READ'],
+            to    : ['AssetViewer']
+        },
+        {
+            grant : ['*'],
+            to    : ['AssetManager']
+        }
+    ]) as projection on my.IaDevices
+
 }
 
 @path : 'service/ia'

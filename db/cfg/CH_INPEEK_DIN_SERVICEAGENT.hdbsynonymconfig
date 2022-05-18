@@ -1,8 +1,0 @@
-{
-    "CH_INPEEK_DIN_GRIDDIST_PROJECTS": {
-        "target": {
-            "object": "CH_INPEEK_DIN_SERVICEAGENT_PROJECTS",
-            "schema.configure": din_service_agent-db-hdi/schema"
-        }
-    }
-}

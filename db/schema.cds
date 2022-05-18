@@ -76,7 +76,7 @@ entity Projects : cuid, managed {
     buildings   : Association to many Buildings2Projects
                       on buildings.project = $self;
 
-    IaHeads     : Composition of many IaHeads
+    IaHeads     : Association to many IaHeads
                       on IaHeads.project = $self;
 /*    events        : Association to many Events
                         on events.project = $self;
@@ -100,11 +100,11 @@ entity IaHeads : cuid, managed {
                            key partner : Association to Partners;
                                role    : String;
                        }
-    IaDevices        : Composition of many IaDevices;
+    IaDevices        : Composition of many IaDevices on IaDevices.parent = $self;
 }
 
 entity IaDevices : cuid, managed {
-    key IaHead     : Association to IaHeads;
+    parent         : Association to IaHeads;
     customer       : Association to Partners;
     premise        : Association to Premises;
     deviceNumber   : String @(title : '{i18n>DeviceNumber}');
